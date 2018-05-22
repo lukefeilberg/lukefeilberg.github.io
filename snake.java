@@ -229,7 +229,7 @@ public class Snake implements ActionListener, KeyListener
     public class RenderPanel extends JPanel
 {
 
-    public static final Color GREEN = new Color(1666073);
+    public final Color GREEN = new Color(1666073);
 
     @Override
     protected void paintComponent(Graphics g)
