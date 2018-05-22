@@ -223,13 +223,10 @@ public class Snake implements ActionListener, KeyListener
     {
     }
 
-}
 
 
-//////////////////////////////
-
-
-public class RenderPanel extends JPanel
+    ////////////////////////////////////
+    public class RenderPanel extends JPanel
 {
 
     public static final Color GREEN = new Color(1666073);
@@ -278,4 +275,7 @@ public class RenderPanel extends JPanel
             g.drawString(string, (int) (getWidth() / 2 - string.length() * 2.5f), (int) snake.dim.getHeight() / 4);
         }
     }
+}///////////////////////////////////////
+
 }
+
