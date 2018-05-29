@@ -83,22 +83,21 @@ body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
 
 
     <h3>Snake</h3> 
-    <applet
-<<<<<<< HEAD
+   <!-- <applet
         code ="Snake$RenderPanel.class"
         codebase="lukefeilberg.github.io"
         height="150"
         width="300">
-     </applet>
-=======
-        code ="Snake.class"
-        height="150"
-        width="300">
-     </applet>
-    <applet code="Snake.class" width="320" height="120">
-    </applet> 
-    <!--codebase="https://github.com/lukefeilberg/lukefeilberg.github.io" -->
->>>>>>> f9f3170b7da813827d19d371576cbed70573d58b
+     </applet> -->
+
+     <embed 
+      id="Snake"
+      type="application/x-java-applet;version=1.6"
+      width="999" height="999" 
+      archive="Snake.jar"
+      code="Snake$RenderPanel.class"
+      pluginspage="http://java.com/download/"
+      myParam="YourParams" />
 
 
 
