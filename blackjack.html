@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<title>Blackjack</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
+.w3-row-padding img {margin-bottom: 12px}
+/* Set the width of the sidebar to 120px */
+.w3-sidebar {width: 120px;background: #222;}
+/* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
+#main {margin-left: 120px}
+/* Remove margins from "page content" on small screens */
+@media only screen and (max-width: 600px) {#main {margin-left: 0}}
+</style>
+<body class="w3-black">
+
+<!-- Icon Bar (Sidebar - hidden on small screens) -->
+<nav class="w3-sidebar w3-bar-block w3-small w3-hide-small w3-center">
+  <!-- Avatar image in top left corner -->
+  <img src="https://image.ibb.co/j8rFVo/meirl_SMALL_just_me_tho2.png" style="width:100%">
+  <a href="#" class="w3-bar-item w3-button w3-padding-large w3-black">
+    <i class="fa fa-home w3-xxlarge"></i>
+    <p>HOME</p>
+  </a>
+  <a href="#about" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-user w3-xxlarge"></i>
+    <p>ABOUT</p>
+  </a>
+  <a href="#stuff" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-eye w3-xxlarge"></i>
+    <p>PROJECTS</p>
+  </a>
+  <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-envelope w3-xxlarge"></i>
+    <p>CONTACT</p>
+  </a>
+</nav>
+
+<!-- Navbar on small screens (Hidden on medium and large screens) -->
+<div class="w3-top w3-hide-large w3-hide-medium" id="myNavbar">
+  <div class="w3-bar w3-black w3-opacity w3-hover-opacity-off w3-center w3-small">
+    <a href="#" class="w3-bar-item w3-button" style="width:25% !important">HOME</a>
+    <a href="#about" class="w3-bar-item w3-button" style="width:25% !important">ABOUT</a>
+    <a href="#stuff" class="w3-bar-item w3-button" style="width:25% !important">STUFF</a>
+    <a href="#contact" class="w3-bar-item w3-button" style="width:25% !important">CONTACT</a>
+  </div>
+</div>
+
+<!-- Page Content -->
+<div class="w3-padding-large" id="main">
+  <!-- Header/Home -->
+  <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
+    <h1 class="w3-jumbo"><span class="w3-hide-small"></span>Blackjack Policy Iteration</h1>
+    <!-- <img src="https://image.ibb.co/fb6ay8/Death_Valley_Narrower.jpg" alt="whoops" class="w3-image" width="992" height="1108">
+    <p><i><sup>Death Valley National Park</sup></i></p> -->
+  </header>
+
+  <!-- About Section -->
+  <div class="w3-padding-16 w3-content" id="blackjack intro">
+    <h2 class="w3-text-light-grey">Blackjack Fun!</h2>
+    <hr style="width:200px" class="w3-opacity">
+    <p>After completing CS 188 (Intro to Artificial Intelligence) at my school I felt inspired to try out some of the techniques I had learned. It occurred to me while taking the class that blackjack could be modelled as a Markov Decision Process (MDP), and thus I could learn the optimal policy (or strategy) by performing Policy Iteration on it. For more general conceptual info see <a href="http://ai.berkeley.edu/home.html" target="_blank">ai.berkeley.edu</a>.
+    
+    <br><br><i>
+    All the code for this project can be found at <a href="https://github.com/lukefeilberg/blackjack" target="_blank">github.com/lukefeilberg/blackjack</a>.
+    </i>
+
+    </p>
+  </div>
+    
+  <div class="w3-padding-16 w3-content" id="states">
+    <h2 class="w3-text-light-grey">States</h2>
+    <hr style="width:200px" class="w3-opacity">
+    <p>For my project I’ve denoted states as tuples (numAces, sum), where numAces denotes the number aces drawn so far, and sum denotes the running sum of the values of cards drawn so far (besides ace values since they can either be one or eleven, hence why numAces is stored). I then number the states 0 to 216 for later simplicity. Possible states are thus <br><br>
+
+    <p style="margin-left: 40px">
+    <font face="consolas">
+
+    0:&ensp;&nbsp;   (0,0),  1:&ensp;&nbsp;  (0,2),  2:&ensp;&nbsp;  (0,3), ..., 29:&ensp;  (0,30), 30:&ensp;  (0,31)<br>
+    31:&ensp;  (1,0), 32:&ensp;  (1,2), 33:&ensp;  (1,3), ..., 60:&ensp;  (1,30), 61:&ensp;  (1,31) <br>
+    62:&ensp;  (1,0), 63:&ensp;  (1,2), 64:&ensp;  (1,3), ..., 91:&ensp;  (1,30), 92:&ensp;  (1,31) <br>
+    ... <br>
+    186: (6,0), 187: (6,2), 188: (6,3), ..., 215: (6,30), 216: (6,31) </p> <br>
+    </font>
+
+Note: (n,1) is not included since drawing a 1 is actually drawing an ace and is thus captured by (n+1, 0) instead. Also note that ending at 6 aces was arbitrary but pulling 7 or more aces seemed sufficiently unlikely for me to care about how to play in that situation. Lastly having the sum run to 31 was an arbitrary choice in order to give a much more legible transition function.
+
+    </p>
+  </div>
+    
+
+  <div class="w3-padding-16 w3-content" id="Actions">
+    <h2 class="w3-text-light-grey">Actions</h2>
+    <hr style="width:200px" class="w3-opacity">
+    <p>In blackjack you have two possible actions: “draw” to draw another card and “stop” to end the game.
+    </p>
+  </div>
+    
+
+  <div class="w3-padding-16 w3-content" id="transitions">
+    <h2 class="w3-text-light-grey">Transitions</h2>
+    <hr style="width:200px" class="w3-opacity">
+    <p>I’ll make the assumption of drawing cards and replacing them back in the deck, this way our strategy doesn’t have to depend on the specific cards drawn/left (plus casinos often play with around eight decks). Thus there is a 1/13 chance when you draw you’ll pull an ace. Since there are 31 columns T(s, “draw”, s+31) = 1/13 (adding 31 takes you down exactly one row as should be clear by looking at the sample of states provided above). Similarly there is a 1/13 chance of pulling a 2 and increased your sum by 2, a 1/13 chance of pulling a 3 and increasing your sum by 3, and so forth giving: T(s, “draw”, s+k) = 1/13 for 2<=k<=9. Lastly, since 10, jack, queen, and kings all have a value of 10, T(s, “draw”, s+10) = 4/13. Any other transition is impossible and will return a value of zero. Since I’m going to need these values very often I’m going to compute them once in a matrix called drawMatrix during initialization.
+    </p>
+  </div>
+
+
+  <div class="w3-padding-16 w3-content" id="Rewards">
+    <h2 class="w3-text-light-grey">Rewards</h2>
+    <hr style="width:200px" class="w3-opacity">
+    <p>You only receive a reward in blackjack for exiting the game with a  sum less than or equal to 21. Thus if your action is stop you receive your sum plus the optimal value of your aces, or zero if this is greater than 21.<br>
+    Ex: R((0,10), “stop”, game over) = 10; R((1,10), “stop”, game over) = 21; R((2,10), “stop”, game over) = 0
+    </p>
+  </div>
+
+
+  <div class="w3-padding-16 w3-content" id="Policy Iteration">
+    <h2 class="w3-text-light-grey">Policy Iteration</h2>
+    <hr style="width:200px" class="w3-opacity">
+    <p>Policy Iteration begins by first defining an arbitrary initial policy, any policy will work but the closer to the optimal policy the quicker the algorithm converges. I’ll define the initial policy as “draw” no matter what to make initialization easy and to hammer home the point that we’ll find the optimal policy despite a terrible initial policy! Now we’ll repeat the following two steps until convergence 1. Policy Evaluation and 2. Policy Improvement. 
+    </p>
+  </div>
+
+
+  <div class="w3-padding-16 w3-content" id="Policy Iteration">
+    <h2 class="w3-text-light-grey">Policy Iteration</h2>
+    <hr style="width:200px" class="w3-opacity">
+    <p>Policy Iteration begins by first defining an arbitrary initial policy, any policy will work but the closer to the optimal policy the quicker the algorithm converges. I’ll define the initial policy as “draw” no matter what to make initialization easy and to hammer home the point that we’ll find the optimal policy despite a terrible initial policy! Now we’ll repeat the following two steps until convergence 1. Policy Evaluation and 2. Policy Improvement. 
+    </p>
+  </div>
+
+  <div class="w3-padding-16 w3-content" id="Policy Evaluation">
+    <h2 class="w3-text-light-grey">Policy Evaluation</h2>
+    <hr style="width:200px" class="w3-opacity">
+    <p>
+
+In the Policy Evaluation step we evaluate the expected value of our score for each state. This will be a system of |S| equations given by the (lightly modified) Bellman Equation:<br>
+
+<p style="margin-left: 40px">
+<img src="https://image.ibb.co/j2VUAz/1_bellman.png" alt="whoops" class="w3-image" width="487" height="38"><br>
+</p>
+
+Since there’s no discount in blackjack (scores remain the same no matter the number of timesteps taken to obtain sum/score) we can set gamma = 1 yielding:<br>
+
+<p style="margin-left: 40px">
+<img src="https://image.ibb.co/hgEZce/2_bellman_no_gamma.png" class="w3-image" width="474" height="38"><br>
+</p>
+
+Now if the policy of a state is “draw” we obtain the following equation:<br>
+
+<p style="margin-left: 40px">
+<img src="https://image.ibb.co/bvZpAz/3_draw_bellman.png" class="w3-image" width="346" height="41"><br>
+<img src="https://image.ibb.co/fvXy3K/4_draw_bellman_expanded.png" class="w3-image" width="584" height="37"><br>
+<img src="https://image.ibb.co/h0mfHe/5_draw_bellman_v_moved_over.png" class="w3-image" width="643" height="42"><br>
+</p>
+
+Otherwise, if the policy of a state is “stop” we obtain the following equation:<br>
+
+<p style="margin-left: 40px">
+<img src="https://image.ibb.co/kqH9Az/6_stop_bellman.png" class="w3-image" width="253" height="37"><br>
+<img src="https://image.ibb.co/fahy3K/7_stop_bellman_moved_over.png" class="w3-image" width="292" height="39"><br>
+</p>
+
+Now we have our system of equations in matrix form and can use numpy’s built in system of equation solver to compute the value of each state under our given policy.
+
+
+
+    </p>
+  </div>
+
+
+  <div class="w3-padding-16 w3-content" id="Policy Improvement">
+    <h2 class="w3-text-light-grey">Policy Improvement</h2>
+    <hr style="width:200px" class="w3-opacity">
+    <p>
+Now that we have the value of each state under our given policy, let’s go ahead and improve our policy! Using our computed values of each state from above we will create a new policy that selects the action that gives the maximum score, according to the equation:<br>
+
+<p style="margin-left: 40px">
+<img src="https://image.ibb.co/iV2LHe/10_new_policy.png" class="w3-image" width="598" height="33"><br><br>
+</p>
+
+Now notice that if our action is “stop” we simply return the reward of stopping at that state. Therefore “stop” does not depend on our computed values of states. This means we only have to compute this value once and can then store it! We’ll do that in an array called stopValue. The values of “draw” in each state can be computed by multiplying our transition matrix by our array of computed values, let’s save this as an array called drawValue. Now we can define our new policy to be “draw” everywhere except the indices where stopValue is greater than drawValue. 
+If our new policy is equivalent to our old policy then the algorithm has converged and we have found the optimal policy! Otherwise we return to the policy evaluation step and repeat all the above until our policy converges.<br><br> 
+
+In our case we converge to the following policy (recall the formatting is (number of aces, running sum excluding aces):
+
+
+<div style="border:1px solid black;height:200px;width:800px;overflow-y:hidden;overflow-x:scroll;margin-left: 40px">
+<p style="width:340%;">
+<font face="consolas">
+(0, 0): draw | (0, 2): draw | (0, 3): draw | (0, 4): draw | (0, 5): draw | (0, 6): draw | (0, 7): draw | (0, 8): draw | (0, 9): draw | (0, 10): draw | (0, 11): draw | (0, 12): draw | (0, 13): stop | (0, 14): stop | (0, 15): stop | (0, 16): stop | (0, 17): stop | (0, 18): stop | (0, 19): stop | (0, 20): stop | (0, 21): stop<br>
+
+(1, 0): draw | (1, 2): draw | (1, 3): draw | (1, 4): draw | (1, 5): draw | (1, 6): draw | (1, 7): draw | (1, 8): stop | (1, 9): stop | (1, 10): stop | (1, 11): draw | (1, 12): stop | (1, 13): stop | (1, 14): stop | (1, 15): stop | (1, 16): stop | (1, 17): stop | (1, 18): stop | (1, 19): stop | (1, 20): stop | (1, 21): stop <br>
+
+(2, 0): draw | (2, 2): draw | (2, 3): draw | (2, 4): draw | (2, 5): draw | (2, 6): draw | (2, 7): stop | (2, 8): stop | (2, 9): stop | (2, 10): draw | (2, 11): stop | (2, 12): stop | (2, 13): stop | (2, 14): stop | (2, 15): stop | (2, 16): stop | (2, 17): stop | (2, 18): stop | (2, 19): stop | (2, 20): stop | (2, 21): stop <br>
+
+(3, 0): draw | (3, 2): draw | (3, 3): draw | (3, 4): draw | (3, 5): draw | (3, 6): stop | (3, 7): stop | (3, 8): stop | (3, 9): draw | (3, 10): stop | (3, 11): stop | (3, 12): stop | (3, 13): stop | (3, 14): stop | (3, 15): stop | (3, 16): stop | (3, 17): stop | (3, 18): stop | (3, 19): stop | (3, 20): stop | (3, 21): stop <br>
+
+(4, 0): draw | (4, 2): draw | (4, 3): draw | (4, 4): draw | (4, 5): stop | (4, 6): stop | (4, 7): stop | (4, 8): draw | (4, 9): stop | (4, 10): stop | (4, 11): stop | (4, 12): stop | (4, 13): stop | (4, 14): stop | (4, 15): stop | (4, 16): stop | (4, 17): stop | (4, 18): stop | (4, 19): stop | (4, 20): stop | (4, 21): stop <br>
+
+(5, 0): draw | (5, 2): draw | (5, 3): draw | (5, 4): stop | (5, 5): stop | (5, 6): stop | (5, 7): draw | (5, 8): stop | (5, 9): stop | (5, 10): stop | (5, 11): stop | (5, 12): stop | (5, 13): stop | (5, 14): stop | (5, 15): stop | (5, 16): stop | (5, 17): stop | (5, 18): stop | (5, 19): stop | (5, 20): stop | (5, 21): stop <br>
+
+(6, 0): draw | (6, 2): stop | (6, 3): stop | (6, 4): stop | (6, 5): stop | (6, 6): stop | (6, 7): stop | (6, 8): stop | (6, 9): stop | (6, 10): stop | (6, 11): stop | (6, 12): stop | (6, 13): stop | (6, 14): stop | (6, 15): stop | (6, 16): stop | (6, 17): stop | (6, 18): stop | (6, 19): stop | (6, 20): stop | (6, 21): stop <br>
+</font>
+</p>
+</div>
+
+
+
+    </p>
+  </div>
+
+
+  <div class="w3-padding-64 w3-content" id="Analysis">
+    <h2 class="w3-text-light-grey">Analysis</h2>
+    <hr style="width:200px" class="w3-opacity">
+    <p>
+My computed policy seems fairly conservative, for example stopping at a sum of 13 with no aces. To aid me in investigating I recreated my program in a far more simplified manner letting aces only take on the value of one, thus states can be represented solely by the running sum of the cards drawn. Under this simplified version the optimal policy says to “stop” at states 12 and above. However, let’s consider state 14. We only will bust if we draw an 8, 9, 10, or face card. Thus we have a 6/13 chance of busting which is less than half. Let’s thus define a second policy to “stop” at states 15 and above. <br><br>
+Now, when I play a hundred thousand games of blackjack under the computed optimal policy I get a score (or average sum) of about 16.02. When I play a hundred thousand games with my second strategy I get a score (average sum) of about 15.01. So our computed policy does have a higher expected score as we hoped. HOWEVER, when I play these two strategies against each other, the second policy performs better! In fact our computed policy wins 37,557 of 100,000 games and the second policy wins 54,209 (with the rest being ties). The lesson here is to be very careful how you define your reward function. I prioritized coming out with the highest score overall, rather than outscoring my component. Another interesting lesson is that a strategy with a higher expected score does not guarantee outperforming a lesser expected score strategy on average. 
+
+    </p>
+  </div>
+
+
+  <!-- End About Section -->
+
+
+  <!-- End Portfolio Section -->
+
+
+  <!-- Contact Section -->
+  <div class="w3-padding-64 w3-content" id="contact">
+    <br><br><br><br><br>
+    <h2 class="w3-text-light-grey">Contact Me</h2>
+    <hr style="width:200px" class="w3-opacity">
+
+    <div class="w3-section">
+      <p><i class="fa fa-map-marker fa-fw w3-text-white w3-xxlarge w3-margin-right"></i> Berkeley, California</p>
+      <p><i class="fa fa-envelope fa-fw w3-text-white w3-xxlarge w3-margin-right"> </i> Email: lukefeilberg@gmail.com</p>
+    </div><br>
+   
+  <!-- End Contact Section -->
+  </div>
+  
+    <!-- Footer -->
+  <footer class="w3-content w3-padding-64 w3-text-grey w3-xlarge">
+    <!--     <i class="fa fa-facebook-official w3-hover-opacity"></i>
+    <i class="fa fa-instagram w3-hover-opacity"></i>
+    <i class="fa fa-snapchat w3-hover-opacity"></i>
+    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+    <i class="fa fa-twitter w3-hover-opacity"></i>
+    <i class="fa fa-linkedin w3-hover-opacity"></i>
+    <p class="w3-medium">Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank" class="w3-hover-text-green">w3.css</a></p>     -->
+  <!-- End footer -->
+  </footer>
+
+  </div>
+
+<!-- END PAGE CONTENT -->
+</div>
+
+</body>
+</html>
