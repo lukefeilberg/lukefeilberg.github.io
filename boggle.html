@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h3>BOGGLE BABYYYY</h3>
+
+rows: <input type="text" id="rows" value="10">
+cols: <input type="text" id="cols" value="10">
+
+<br><br>
+<button onclick="myFunction()">Generate Board</button>
+
+<p id="board" style="font-family:courier;font-size:150%;"></p>
+<p id="words"></p>
+
+
+<script>
+async function myFunction() {
+    var rows = document.getElementById("rows").value;
+    var cols = document.getElementById("cols").value;
+    
+    //GENERATING BOARD:
+    var letters = "abcdefghijklmnopqrstuvwxyz" //Maybe switch to ['a',...,'qu',...,'z']
+    var board = []
+    for (var i = 0; i < rows; i++) {
+    	board[i] = [];
+
+    	for (var j = 0; j < cols; j++) {
+    		//Assigning random letters to the board
+    		board[i][j] = letters.charAt(Math.floor(rand() * letters.length))
+    	}
+  	}
+	
+  	//DISPLAYING BOARD:
+    for (var i = 0; i < rows; i++) {
+  		document.getElementById("board").innerHTML += board[i].join(' ');
+  		document.getElementById("board").innerHTML += "<br>";
+	}
+
+	//GETTING DICTIONARY
+	const library = await fetch('https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt', {});
+	words = await library.text();
+	words = words.split("\n");
+	//for loop gets rid of the "\n" chars (last word is fine though)
+	for (var i = 0; i < words.length - 1; i++) {
+		words[i] = words[i].substring(0, words[i].length - 1);
+	}
+
+    document.getElementById("words").innerHTML = "Number of words: " + words.length + "<br>" + words[words.length-1] + "<br>" + words[0];
+
+    //ADDING DICTIONARY WORDS INTO TRIE
+    var dict = new Trie();   
+    for (var i = 0; i <  words.length; i++) {
+    	dict.add(words[i].toString());
+    }
+
+    //BIGGESTFIRSTQUEUE TESTING
+    var pq = new BiggestFirstQueue();
+	pq.enqueue("a");
+	pq.enqueue("hello");
+	pq.enqueue("cat");
+	pq.enqueue("break");
+	pq.enqueue("zzzzz")
+	pq.print();  
+
+}
+
+
+// Credit: Victor Quinn - https://github.com/chancejs/chancejs/issues/232#issuecomment-182500222
+function rand() {
+    var arr = new Uint32Array(1);
+    window.crypto.getRandomValues(arr);
+    // This jazz is necessary to translate from a random integer to a floating point from 0 to 1
+    return arr[0]/(0xffffffff + 1);
+};
+
+//TRIE-----------------------------------------------------------------
+function Node(c) {
+	this.c = c; //This node's character
+	this.children = {};
+	this.isWord = false;
+}
+
+function Trie() {
+  this.root = new Node(null);
+}
+
+
+Trie.prototype.add = function(word) {
+	var node = this.root; //Node to traverse each letter of given word
+
+	for (var i = 0; i < word.length; i++) {
+
+		if (!node.children[word[i]]) {
+
+			node.children[word[i]] = new Node(word[i])
+
+		} 
+
+		node = node.children[word[i]]
+		
+	}
+
+	node.isWord = true;
+}
+
+
+Trie.prototype.isPrefixOrWord = function(word) {
+	/*
+	
+	Returns 0 if not prefix or word ; "qzedf" returns 0
+	Returns 1 if only prefix        ; "tabl"  returns 1
+	Returns 2 if word               ; "table" retunrs 2
+
+	*/
+	
+	var node = this.root; //Node to traverse each letter of given word
+
+	for (var i = 0; i < word.length; i++) {
+
+		if (!node.children[word[i]]) {
+			return 0; //not a prefix or word
+		}
+
+		node = node.children[word[i]];//Moving along (onto next char)
+	}
+
+    if (!node.isWord) {
+        return 1;
+    } else {
+        return 2;
+    }
+}
+//--------------------------------------------------------------------
+//PRIORITY QUEUE------------------------------------------------------
+
+function BiggestFirstQueue() {
+	this.items = [];
+}
+
+BiggestFirstQueue.prototype.enqueue = function(element) {
+	var added = false;
+	for (var i = 0; i < this.items.length; i++) {
+
+		if (element.length > this.items[i].length) {
+			this.items.splice(i, 0, element);
+			added = true;
+			break;
+		}
+	}
+
+	if (!added) {
+		this.items.push(element);
+	}
+}
+
+BiggestFirstQueue.prototype.print = function() {
+	console.log(this.items)
+}
+
+
+
+</script>
+
+</body>
+</html>
