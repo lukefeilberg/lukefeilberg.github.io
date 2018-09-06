@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>Luke Feilberg</title>
+<title>Boggle</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -90,6 +90,7 @@ async function myFunction() {
     }
   
     //DISPLAYING BOARD:
+    document.getElementById("board").innerHTML = "";
     for (var i = 0; i < rows; i++) {
       document.getElementById("board").innerHTML += board[i].join(' ');
       document.getElementById("board").innerHTML += "<br>";
