@@ -1,17 +1,75 @@
 <!DOCTYPE html>
 <html>
-<body>
+<title>Luke Feilberg</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
+.w3-row-padding img {margin-bottom: 12px}
+/* Set the width of the sidebar to 120px */
+.w3-sidebar {width: 120px;background: #222;}
+/* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
+#main {margin-left: 120px}
+/* Remove margins from "page content" on small screens */
+@media only screen and (max-width: 600px) {#main {margin-left: 0}}
+</style>
+<body class="w3-black">
 
-<h3>BOGGLE BABYYYY</h3>
+<!-- Icon Bar (Sidebar - hidden on small screens) -->
+<nav class="w3-sidebar w3-bar-block w3-small w3-hide-small w3-center">
+  <!-- Avatar image in top left corner -->
+  <img src="https://image.ibb.co/j8rFVo/meirl_SMALL_just_me_tho2.png" style="width:100%">
+  <a href="#" class="w3-bar-item w3-button w3-padding-large w3-black">
+    <i class="fa fa-home w3-xxlarge"></i>
+    <p>HOME</p>
+  </a>
+  <a href="http://lukefeilberg.me" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-user w3-xxlarge"></i>
+    <p>ABOUT</p>
+  </a>
+  <a href="http://lukefeilberg.me/projects.html" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-eye w3-xxlarge"></i>
+    <p>PROJECTS</p>
+  </a>
+  <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-envelope w3-xxlarge"></i>
+    <p>CONTACT</p>
+  </a>
+</nav>
 
-rows: <input type="text" id="rows" value="10">
-cols: <input type="text" id="cols" value="10">
+<!-- Navbar on small screens (Hidden on medium and large screens) -->
+<div class="w3-top w3-hide-large w3-hide-medium" id="myNavbar">
+  <div class="w3-bar w3-black w3-opacity w3-hover-opacity-off w3-center w3-small">
+    <a href="http://lukefeilberg.me" class="w3-bar-item w3-button" style="width:25% !important">HOME</a>
+    <a href="http://lukefeilberg.me" class="w3-bar-item w3-button" style="width:25% !important">ABOUT</a>
+    <a href="http://lukefeilberg.me/projects.html" class="w3-bar-item w3-button" style="width:25% !important">PROJECTS</a>
+    <a href="#contact" class="w3-bar-item w3-button" style="width:25% !important">CONTACT</a>
+  </div>
+</div>
+
+
+
+
+
+<!-- Page Content -->
+<div class="w3-padding-large" id="main">
+  <!-- Header/Home -->
+  <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
+    <h1 class="w3-jumbo"><span class="w3-hide-small"></span>BOGGLE BABYYYY</h1>
+  
+ROWS: <input type="text" id="rows" value="10">
+COLS: <input type="text" id="cols" value="10">
 
 <br><br>
 <button onclick="myFunction()">Generate Board</button>
 
 <p id="board" style="font-family:courier;font-size:150%;"></p>
 <p id="words"></p>
+
+
 
 
 <script>
@@ -23,40 +81,39 @@ async function myFunction() {
     var letters = "abcdefghijklmnopqrstuvwxyz" //Maybe switch to ['a',...,'qu',...,'z']
     var board = []
     for (var i = 0; i < rows; i++) {
-    	board[i] = [];
+      board[i] = [];
 
-    	for (var j = 0; j < cols; j++) {
-    		//Assigning random letters to the board
-    		board[i][j] = letters.charAt(Math.floor(rand() * letters.length))
-    	}
-  	}
-	
-  	//DISPLAYING BOARD:
+      for (var j = 0; j < cols; j++) {
+        //Assigning random letters to the board
+        board[i][j] = letters.charAt(Math.floor(rand() * letters.length))
+      }
+    }
+  
+    //DISPLAYING BOARD:
     for (var i = 0; i < rows; i++) {
-  		document.getElementById("board").innerHTML += board[i].join(' ');
-  		document.getElementById("board").innerHTML += "<br>";
-	}
+      document.getElementById("board").innerHTML += board[i].join(' ');
+      document.getElementById("board").innerHTML += "<br>";
+  }
 
-	//GETTING DICTIONARY
-	const library = await fetch('https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt', {});
-	words = await library.text();
-	words = words.split("\n");
-	//for loop gets rid of the "\n" chars (last word is fine though)
-	for (var i = 0; i < words.length - 1; i++) {
-		words[i] = words[i].substring(0, words[i].length - 1);
-	}
+  //GETTING DICTIONARY
+  const library = await fetch('https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt', {});
+  words = await library.text();
+  words = words.split("\n");
+  //for loop gets rid of the "\n" chars (last word is fine though)
+  for (var i = 0; i < words.length - 1; i++) {
+    words[i] = words[i].substring(0, words[i].length - 1);
+  }
 
-    document.getElementById("words").innerHTML = "Number of words: " + words.length + "<br>" + words[words.length-1] + "<br>" + words[0];
+    //document.getElementById("words").innerHTML = "Number of words: " + words.length + "<br>" + words[words.length-1] + "<br>" + words[0];
 
     //ADDING DICTIONARY WORDS INTO TRIE
     var dict = new Trie();   
     for (var i = 0; i <  words.length; i++) {
-    	dict.add(words[i].toString());
+      dict.add(words[i].toString());
     }
 
     //SOLVE BOARD
-	solve(dict, board, rows, cols);  
-
+  solve(dict, board, rows, cols);  
 
 }
 
@@ -71,9 +128,9 @@ function rand() {
 
 //TRIE-----------------------------------------------------------------
 function Node(c) {
-	this.c = c; //This node's character
-	this.children = {};
-	this.isWord = false;
+  this.c = c; //This node's character
+  this.children = {};
+  this.isWord = false;
 }
 
 function Trie() {
@@ -82,43 +139,43 @@ function Trie() {
 
 
 Trie.prototype.add = function(word) {
-	var node = this.root; //Node to traverse each letter of given word
+  var node = this.root; //Node to traverse each letter of given word
 
-	for (var i = 0; i < word.length; i++) {
+  for (var i = 0; i < word.length; i++) {
 
-		if (!node.children[word[i]]) {
+    if (!node.children[word[i]]) {
 
-			node.children[word[i]] = new Node(word[i])
+      node.children[word[i]] = new Node(word[i])
 
-		} 
+    } 
 
-		node = node.children[word[i]]
-		
-	}
+    node = node.children[word[i]]
+    
+  }
 
-	node.isWord = true;
+  node.isWord = true;
 }
 
 
 Trie.prototype.isPrefixOrWord = function(word) {
-	/*
-	
-	Returns 0 if not prefix or word ; "qzedf" returns 0
-	Returns 1 if only prefix        ; "tabl"  returns 1
-	Returns 2 if word               ; "table" retunrs 2
+  /*
+  
+  Returns 0 if not prefix or word ; "qzedf" returns 0
+  Returns 1 if only prefix        ; "tabl"  returns 1
+  Returns 2 if word               ; "table" retunrs 2
 
-	*/
-	
-	var node = this.root; //Node to traverse each letter of given word
+  */
+  
+  var node = this.root; //Node to traverse each letter of given word
 
-	for (var i = 0; i < word.length; i++) {
+  for (var i = 0; i < word.length; i++) {
 
-		if (!node.children[word[i]]) {
-			return 0; //not a prefix or word
-		}
+    if (!node.children[word[i]]) {
+      return 0; //not a prefix or word
+    }
 
-		node = node.children[word[i]];//Moving along (onto next char)
-	}
+    node = node.children[word[i]];//Moving along (onto next char)
+  }
 
     if (!node.isWord) {
         return 1;
@@ -130,104 +187,167 @@ Trie.prototype.isPrefixOrWord = function(word) {
 //PRIORITY QUEUE------------------------------------------------------
 
 function BiggestFirstQueue() {
-	this.items = [];
+  this.items = [];
 }
 
+//TODO: Enqueue largest and in alphabetical;
 BiggestFirstQueue.prototype.enqueue = function(element) {
-	var added = false;
-	for (var i = 0; i < this.items.length; i++) {
+  if (this.items.indexOf(element) > -1) {
+    return;
+  }
 
-		if (element.length > this.items[i].length) {
-			this.items.splice(i, 0, element);
-			added = true;
-			break;
-		}
-	}
+  var added = false;
+  for (var i = 0; i < this.items.length; i++) {
 
-	if (!added) {
-		this.items.push(element);
-	}
+    if (element.length > this.items[i].length) {
+      this.items.splice(i, 0, element);
+      added = true;
+      break;
+    }
+  }
+
+  if (!added) {
+    this.items.push(element);
+  }
 }
 
+//Prints words of top two longest lengths
 BiggestFirstQueue.prototype.print = function() {
-	console.log(this.items)
+
+  longestLength = this.items[0].length;
+
+  var i = 0;
+
+    document.getElementById("words").innerHTML = "Longest Words (length " + longestLength + "): <br>";
+
+  while (this.items[i].length == longestLength) {
+
+    document.getElementById("words").innerHTML += this.items[i] + " ";
+    i += 1;
+
+  }
+
+  secondLongestLength = this.items[i].length;
+
+    document.getElementById("words").innerHTML += "<br><br>Second Longest Words (length " + secondLongestLength + "): <br>";
+
+  while (this.items[i].length == secondLongestLength) {
+
+    document.getElementById("words").innerHTML += this.items[i] + " ";
+    i += 1;
+
+  }
+
+
+  console.log(this.items)
 }
 //---------------------------------------------------------------------
 //FINDING WORDS (ANSWERS) IN BOARD
 
 function solve(dict, board, rows, cols) {
 
-	var answers = new BiggestFirstQueue(); //words found on the board
-	var traversed = new Set(); //index [i][j] added as i * rows + j
+  var answers = new BiggestFirstQueue(); //words found on the board
+  var traversed = new Set(); //index [i][j] added as i * rows + j
 
-	for (var i = 0; i < rows; i++) {
-			
-		for (var j = 0; j < cols; j++) {
+  for (var i = 0; i < rows; i++) {
+      
+    for (var j = 0; j < cols; j++) {
 
-			traversed.add(i * rows + j);
+      traversed.add(i * rows + j);
 
-			solveRec(dict, board, rows, cols, i, j, traversed, answers, board[i][j]);
+      solveRec(dict, board, rows, cols, i, j, traversed, answers, board[i][j]);
 
-			traversed.delete(i * rows + j);
-		}
+      traversed.delete(i * rows + j);
+    }
 
-	}
+  }
 
-	answers.print()
+  answers.print()
 
 }
 
 //word is built up from the letters recursively
-//CHECK word + board[i][j] works as expecred
 function solveRec(dict, board, rows, cols, i, j, traversed, answers, word) {
 
-	var p = 0; // 2 if word, 1 if just prefix, 0 if none
+  var p = 0; // 2 if word, 1 if just prefix, 0 if none
 
 
-	for (var x = i - 1; x <= i + 1; x++) {
+  for (var x = i - 1; x <= i + 1; x++) {
 
-	    for (var y = j - 1; y <= j + 1; y++) {
+      for (var y = j - 1; y <= j + 1; y++) {
 
-	        if (x == i && y == j) {
+          if (x == i && y == j) {
 
-	            continue;
-	        
-	        }
+              continue;
+          
+          }
 
-	        if (x != -1 && y != -1 && x != rows && y != cols
+          if (x != -1 && y != -1 && x != rows && y != cols
 
-	                && !traversed.has(x * rows + y)) {
+                  && !traversed.has(x * rows + y)) {
 
-	            p = dict.isPrefixOrWord(word + board[i][j]);
+              p = dict.isPrefixOrWord(word + board[x][y]);
 
-	            if (p > 0) {
+              if (p > 0) {
 
-	                if (p == 2) {
+                  if (p == 2) {
 
-	                    answers.enqueue(word + board[x][y]);
+                      answers.enqueue(word + board[x][y]);
 
-	                }
+                  }
 
-	                traversed.add(x * rows + y);
+                  traversed.add(x * rows + y);
 
-	                solveRec(dict, board, rows, cols, x, y, traversed,
+                  solveRec(dict, board, rows, cols, x, y, traversed,
 
-	                        answers, word + board[x][y]);
+                          answers, word + board[x][y]);
 
-	                traversed.delete(x * rows + y);
+                  traversed.delete(x * rows + y);
 
-	            }
+              }
 
-	        }
+          }
 
-	    }
+      }
 
-	}
+  }
 }
 
 
 
 </script>
+
+
+<br><br><br><br>
+</header>
+
+
+
+
+
+
+
+  <!-- Contact Section -->
+  <div class="w3-padding-64 w3-content" id="contact">
+    <h2 class="w3-text-light-grey">Contact Me</h2>
+    <hr style="width:200px" class="w3-opacity">
+
+    <div class="w3-section">
+      <p><i class="fa fa-map-marker fa-fw w3-text-white w3-xxlarge w3-margin-right"></i> Berkeley, California</p>
+      <p><i class="fa fa-envelope fa-fw w3-text-white w3-xxlarge w3-margin-right"> </i> Email: lukefeilberg@gmail.com</p>
+    </div><br>
+   
+  <!-- End Contact Section -->
+  </div>
+  
+    <!-- Footer -->
+  <footer class="w3-content w3-padding-64 w3-text-grey w3-xlarge">
+  </footer>
+
+  </div>
+
+<!-- END PAGE CONTENT -->
+</div>
 
 </body>
 </html>
