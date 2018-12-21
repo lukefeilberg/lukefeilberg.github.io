@@ -82,7 +82,7 @@ body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
 
     0:&ensp;&nbsp;   (0,0),  1:&ensp;&nbsp;  (0,2),  2:&ensp;&nbsp;  (0,3), ..., 29:&ensp;  (0,30), 30:&ensp;  (0,31)<br>
     31:&ensp;  (1,0), 32:&ensp;  (1,2), 33:&ensp;  (1,3), ..., 60:&ensp;  (1,30), 61:&ensp;  (1,31) <br>
-    62:&ensp;  (1,0), 63:&ensp;  (1,2), 64:&ensp;  (1,3), ..., 91:&ensp;  (1,30), 92:&ensp;  (1,31) <br>
+    62:&ensp;  (2,0), 63:&ensp;  (2,2), 64:&ensp;  (2,3), ..., 91:&ensp;  (2,30), 92:&ensp;  (2,31) <br>
     ... <br>
     186: (6,0), 187: (6,2), 188: (6,3), ..., 215: (6,30), 216: (6,31) </p> <br>
     </font>
@@ -125,13 +125,6 @@ Note: (n,1) is not included since drawing a 1 is actually drawing an ace and is 
     </p>
   </div>
 
-
-  <div class="w3-padding-16 w3-content" id="Policy Iteration">
-    <h2 class="w3-text-light-grey">Policy Iteration</h2>
-    <hr style="width:200px" class="w3-opacity">
-    <p>Policy Iteration begins by first defining an arbitrary initial policy, any policy will work but the closer to the optimal policy the quicker the algorithm converges. I’ll define the initial policy as “draw” no matter what to make initialization easy and to hammer home the point that we’ll find the optimal policy despite a terrible initial policy! Now we’ll repeat the following two steps until convergence 1. Policy Evaluation and 2. Policy Improvement. 
-    </p>
-  </div>
 
   <div class="w3-padding-16 w3-content" id="Policy Evaluation">
     <h2 class="w3-text-light-grey">Policy Evaluation</h2>
