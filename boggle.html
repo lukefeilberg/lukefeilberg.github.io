@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <title>Boggle</title>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -58,9 +59,11 @@ body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
 <div class="w3-padding-large" id="main">
   <!-- Header/Home -->
   <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
-    <h1 class="w3-jumbo"><span class="w3-hide-small"></span>BOGGLE BABYYYY</h1>
-  
+    <h1 class="w3-jumbo"><span class="w3-hide-small"></span>BOGGLE :-)</h1>
+
+<br><br>
 ROWS: <input type="text" id="rows" value="10">
+&nbsp;&nbsp;
 COLS: <input type="text" id="cols" value="10">
 
 <br><br>
@@ -68,8 +71,6 @@ COLS: <input type="text" id="cols" value="10">
 
 <p id="board" style="font-family:courier;font-size:150%;"></p>
 <p id="words"></p>
-
-
 
 
 <script>
@@ -163,7 +164,7 @@ Trie.prototype.isPrefixOrWord = function(word) {
   
   Returns 0 if not prefix or word ; "qzedf" returns 0
   Returns 1 if only prefix        ; "tabl"  returns 1
-  Returns 2 if word               ; "table" retunrs 2
+  Returns 2 if word               ; "table" returns 2
 
   */
   
@@ -248,8 +249,9 @@ BiggestFirstQueue.prototype.print = function() {
 function solve(dict, board, rows, cols) {
 
   var answers = new BiggestFirstQueue(); //words found on the board
-  var traversed = new Set(); //index [i][j] added as i * rows + j
+  var traversed = new Set(); //index [i][j] added as i * rows + j, can't repeat letter/position
 
+  //Looping through board. 
   for (var i = 0; i < rows; i++) {
       
     for (var j = 0; j < cols; j++) {
@@ -272,25 +274,20 @@ function solveRec(dict, board, rows, cols, i, j, traversed, answers, word) {
 
   var p = 0; // 2 if word, 1 if just prefix, 0 if none
 
-
+  //Looping through all adjacent positions
   for (var x = i - 1; x <= i + 1; x++) {
 
       for (var y = j - 1; y <= j + 1; y++) {
 
-          if (x == i && y == j) {
-
-              continue;
-          
-          }
-
+          //Avoiding edges and already used letter-positions
           if (x != -1 && y != -1 && x != rows && y != cols
+              && !traversed.has(x * rows + y)) {
 
-                  && !traversed.has(x * rows + y)) {
-
-              p = dict.isPrefixOrWord(word + board[x][y]);
+              p = dict.isPrefixOrWord(word + board[x][y]);//2 if word, 1 if just prefix, 0 if none
 
               if (p > 0) {
 
+                  //Note: even if it's a word continue searching after as may be compound word
                   if (p == 2) {
 
                       answers.enqueue(word + board[x][y]);
@@ -300,7 +297,6 @@ function solveRec(dict, board, rows, cols, i, j, traversed, answers, word) {
                   traversed.add(x * rows + y);
 
                   solveRec(dict, board, rows, cols, x, y, traversed,
-
                           answers, word + board[x][y]);
 
                   traversed.delete(x * rows + y);
@@ -312,6 +308,7 @@ function solveRec(dict, board, rows, cols, i, j, traversed, answers, word) {
       }
 
   }
+
 }
 
 
@@ -325,6 +322,46 @@ function solveRec(dict, board, rows, cols, i, j, traversed, answers, word) {
 
 
 
+
+
+
+
+  <div class="w3-padding-16 w3-content" id="Actions">
+    <h2 class="w3-text-light-grey">Trie to Understand Tries</h2>
+    <hr style="width:360px" class="w3-opacity">
+    <p>The <a href="https://en.wikipedia.org/wiki/Boggle" target="_blank">boggle</a> board above is generated with new random letters with every click of the generate board button. From there you can try to find words by starting with any letter and looking to the letters adjacent to it (up, down, left, right, and all diagonals) and continuing in this manner to form words with the only caveat that you can not repeat the same letter/position twice.<br><br>
+
+    To find the longest words with Javascript, I first fetched ~479,000 English words from <a href="https://github.com/dwyl/english-words" target="_blank">github.com/dwyl/english-words</a> (which admittedly contains some pretty archaic words), then added every single word to my <a href="https://en.wikipedia.org/wiki/Trie">Trie</a> data structure.<br><br>
+
+    The trie data structure is essentially just a tree where the nodes are letters and as you descend down the tree the letters form words. At each node a letter is stored as well as whether or not this additional letter now forms a word. An example Trie is shown below with the words "he", "hey", "hell", "hello", "world", "word", and "words".
+
+    <p style="margin-left: 100px"> 
+    <img src="https://i.ibb.co/grdRxrb/trie-pic.jpg" class="center" style="width:70%" ><br><br>
+    </p>
+
+    We see from above how the seven words are stored in a very space-saving manner. It also may be becoming clear how storing words in this way is helpful to find the words on a Boggle board. After adding all the words to my Trie, I added a function <b>isWordOrPrefix</b> that takes a string as the input and returns whether the string is a word, a prefix to a word (as in those letters begin forming a word), or returns none. For example, "hello" returns <i>word</i>, "hel" returns <i>prefix</i>, and "qyxq" returns <i>none</i>.<br><br>
+
+    With all the words loaded into the Trie and the <b>isWordOrPrefix</b> function working, finding all the words contained on the Boggle board followed the same basic strategy anyone solving a word-search or Boggle board would use: Start at the top left letter, then scan the adjacent letters that together begin forming words, continuing this way until all the words have been formed from that starting position, and then starting over for every other letter on the board.<br><br>
+
+
+
+
+
+    </p>
+  </div>
+
+
+
+
+<!-- 
+Favorite words:
+yahooism: The behaviour or attitudes of yahoos; ignorant boorishness
+dodecafid: Divided into twelve parts
+vulcanizer: 
+moonshining: the practice of illegally making or smuggling distilled spirits
+hoplology: 
+slipslops: 
+-->
 
 
 
