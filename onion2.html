@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+  <!-- Actual start of head -->
+  <title>Onion</title>
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+  body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
+  .w3-row-padding img {margin-bottom: 12px}
+  /* Set the width of the sidebar to 120px */
+  .w3-sidebar {width: 120px;background: #222;}
+  /* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
+  #main {margin-left: 120px}
+  /* Remove margins from "page content" on small screens */
+  @media only screen and (max-width: 600px) {#main {margin-left: 0}}
+  </style>
+</head>
+
+<body class="w3-black">
+  <!-- IMPORT -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.5.2/dist/tf.min.js"></script>
+
+<!-- Icon Bar (Sidebar - hidden on small screens) -->
+<nav class="w3-sidebar w3-bar-block w3-small w3-hide-small w3-center">
+  <!-- Avatar image in top left corner -->
+  <img src="https://image.ibb.co/j8rFVo/meirl_SMALL_just_me_tho2.png" style="width:100%">
+  <a href="#" class="w3-bar-item w3-button w3-padding-large w3-black">
+    <i class="fa fa-home w3-xxlarge"></i>
+    <p>HOME</p>
+  </a>
+  <a href="http://lukefeilberg.github.io" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-user w3-xxlarge"></i>
+    <p>ABOUT</p>
+  </a>
+  <a href="http://lukefeilberg.github.io/projects.html" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-eye w3-xxlarge"></i>
+    <p>PROJECTS</p>
+  </a>
+  <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-envelope w3-xxlarge"></i>
+    <p>CONTACT</p>
+  </a>
+</nav>
+
+<!-- Navbar on small screens (Hidden on medium and large screens) -->
+<div class="w3-top w3-hide-large w3-hide-medium" id="myNavbar">
+  <div class="w3-bar w3-black w3-opacity w3-hover-opacity-off w3-center w3-small">
+    <a href="http://lukefeilberg.github.io" class="w3-bar-item w3-button" style="width:25% !important">HOME</a>
+    <a href="http://lukefeilberg.github.io" class="w3-bar-item w3-button" style="width:25% !important">ABOUT</a>
+    <a href="http://lukefeilberg.github.io/projects.html" class="w3-bar-item w3-button" style="width:25% !important">PROJECTS</a>
+    <a href="#contact" class="w3-bar-item w3-button" style="width:25% !important">CONTACT</a>
+  </div>
+</div>
+
+
+
+
+
+<!-- Page Content -->
+<div class="w3-padding-large" id="main">
+  <!-- Header/Home -->
+  <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
+    <h1 class="w3-jumbo"><span class="w3-hide-small"></span>ONION :-)</h1>
+
+<br><br>
+Enter your headline:
+<br><br>
+<input type="text" id="headline" size = "65">
+<br><br>
+<button onclick="myFunction()">Submit</button>
+
+<p id="board" style="font-family:courier;font-size:150%;"></p>
+<p id="result"></p>
+
+
+
+<script>
+async function myFunction() {
+    // import * as tf from '@tensorflow/tfjs';
+    const model = await tf.loadLayersModel('model.json')
+
+    console.log(model)
+    console.log('Testing')
+
+    var headline = document.getElementById("headline").value;
+    
+
+
+
+}
+
+
+// // Credit: Victor Quinn - https://github.com/chancejs/chancejs/issues/232#issuecomment-182500222
+// function rand() {
+//     var arr = new Uint32Array(1);
+//     window.crypto.getRandomValues(arr);
+//     // This jazz is necessary to translate from a random integer to a floating point from 0 to 1
+//     return arr[0]/(0xffffffff + 1);
+// };
+
+// //TRIE-----------------------------------------------------------------
+// function Node(c) {
+//   this.c = c; //This node's character
+//   this.children = {};
+//   this.isWord = false;
+// }
+
+// function Trie() {
+//   this.root = new Node(null);
+// }
+
+
+// Trie.prototype.add = function(word) {
+//   var node = this.root; //Node to traverse each letter of given word
+
+//   for (var i = 0; i < word.length; i++) {
+
+//     if (!node.children[word[i]]) {
+
+//       node.children[word[i]] = new Node(word[i])
+
+//     } 
+
+//     node = node.children[word[i]]
+    
+//   }
+
+//   node.isWord = true;
+// }
+
+
+// Trie.prototype.isPrefixOrWord = function(word) {
+//   /*
+  
+//   Returns 0 if not prefix or word ; "qzedf" returns 0
+//   Returns 1 if only prefix        ; "tabl"  returns 1
+//   Returns 2 if word               ; "table" returns 2
+
+//   */
+  
+//   var node = this.root; //Node to traverse each letter of given word
+
+//   for (var i = 0; i < word.length; i++) {
+
+//     if (!node.children[word[i]]) {
+//       return 0; //not a prefix or word
+//     }
+
+//     node = node.children[word[i]];//Moving along (onto next char)
+//   }
+
+//     if (!node.isWord) {
+//         return 1;
+//     } else {
+//         return 2;
+//     }
+// }
+// //--------------------------------------------------------------------
+// //PRIORITY QUEUE------------------------------------------------------
+
+// function BiggestFirstQueue() {
+//   this.items = [];
+// }
+
+// //TODO: Enqueue largest and in alphabetical;
+// BiggestFirstQueue.prototype.enqueue = function(element) {
+//   if (this.items.indexOf(element) > -1) {
+//     return;
+//   }
+
+//   var added = false;
+//   for (var i = 0; i < this.items.length; i++) {
+
+//     if (element.length > this.items[i].length) {
+//       this.items.splice(i, 0, element);
+//       added = true;
+//       break;
+//     }
+//   }
+
+//   if (!added) {
+//     this.items.push(element);
+//   }
+// }
+
+// //Prints words of top two longest lengths
+// BiggestFirstQueue.prototype.print = function() {
+
+//   longestLength = this.items[0].length;
+
+//   var i = 0;
+
+//     document.getElementById("words").innerHTML = "Longest Words (length " + longestLength + "): <br>";
+
+//   while (this.items[i].length == longestLength) {
+
+//     document.getElementById("words").innerHTML += this.items[i] + " ";
+//     i += 1;
+
+//   }
+
+//   secondLongestLength = this.items[i].length;
+
+//     document.getElementById("words").innerHTML += "<br><br>Second Longest Words (length " + secondLongestLength + "): <br>";
+
+//   while (this.items[i].length == secondLongestLength) {
+
+//     document.getElementById("words").innerHTML += this.items[i] + " ";
+//     i += 1;
+
+//   }
+
+
+//   console.log(this.items)
+// }
+// //---------------------------------------------------------------------
+// //FINDING WORDS (ANSWERS) IN BOARD
+
+// function solve(dict, board, rows, cols) {
+
+//   var answers = new BiggestFirstQueue(); //words found on the board
+//   var traversed = new Set(); //index [i][j] added as i * rows + j, can't repeat letter/position
+
+//   //Looping through board. 
+//   for (var i = 0; i < rows; i++) {
+      
+//     for (var j = 0; j < cols; j++) {
+
+//       traversed.add(i * rows + j);
+
+//       solveRec(dict, board, rows, cols, i, j, traversed, answers, board[i][j]);
+
+//       traversed.delete(i * rows + j);
+//     }
+
+//   }
+
+//   answers.print()
+
+// }
+
+// //word is built up from the letters recursively
+// function solveRec(dict, board, rows, cols, i, j, traversed, answers, word) {
+
+//   var p = 0; // 2 if word, 1 if just prefix, 0 if none
+
+//   //Looping through all adjacent positions
+//   for (var x = i - 1; x <= i + 1; x++) {
+
+//       for (var y = j - 1; y <= j + 1; y++) {
+
+//           //Avoiding edges and already used letter-positions
+//           if (x != -1 && y != -1 && x != rows && y != cols
+//               && !traversed.has(x * rows + y)) {
+
+//               p = dict.isPrefixOrWord(word + board[x][y]);//2 if word, 1 if just prefix, 0 if none
+
+//               if (p > 0) {
+
+//                   //Note: even if it's a word continue searching after as may be compound word
+//                   if (p == 2) {
+
+//                       answers.enqueue(word + board[x][y]);
+
+//                   }
+
+//                   traversed.add(x * rows + y);
+
+//                   solveRec(dict, board, rows, cols, x, y, traversed,
+//                           answers, word + board[x][y]);
+
+//                   traversed.delete(x * rows + y);
+
+//               }
+
+//           }
+
+//       }
+
+//   }
+
+// }
+
+
+
+</script>
+
+
+<br><br><br><br>
+</header>
+
+
+
+
+
+
+
+
+  <div class="w3-padding-16 w3-content" id="Actions">
+    <h2 class="w3-text-light-grey">Trie to Understand Tries</h2>
+    <hr style="width:360px" class="w3-opacity">
+    <p>The <a href="https://en.wikipedia.org/wiki/Boggle" target="_blank">boggle</a> board above is generated with new random letters with every click of the generate board button. From there you can try to find words by starting with any letter and looking to the letters adjacent to it (up, down, left, right, and all diagonals) and continuing in this manner to form words with the only caveat that you can not repeat the same letter/position twice.<br><br>
+
+    To find the longest words with Javascript, I first fetched ~479,000 English words from <a href="https://github.com/dwyl/english-words" target="_blank">github.com/dwyl/english-words</a> (which admittedly contains some pretty archaic words), then added every single word to my <a href="https://en.wikipedia.org/wiki/Trie">Trie</a> data structure.<br><br>
+
+    The trie data structure is essentially just a tree where the nodes are letters and as you descend down the tree the letters form words. At each node a letter is stored as well as whether or not this additional letter now forms a word. An example Trie is shown below with the words "he", "hey", "hell", "hello", "world", "word", and "words".
+
+    <p style="margin-left: 100px"> 
+    <img src="https://i.ibb.co/grdRxrb/trie-pic.jpg" class="center" style="width:70%" ><br><br>
+    </p>
+
+    We see from above how the seven words are stored in a very space-saving manner. It also may be becoming clear how storing words in this way is helpful to find the words on a Boggle board. After adding all the words to my Trie, I added a function <b>isWordOrPrefix</b> that takes a string as the input and returns whether the string is a word, a prefix to a word (as in those letters begin forming a word), or returns none. For example, "hello" returns <i>word</i>, "hel" returns <i>prefix</i>, and "qyxq" returns <i>none</i>.<br><br>
+
+    With all the words loaded into the Trie and the <b>isWordOrPrefix</b> function working, finding all the words contained on the Boggle board followed the same basic strategy anyone solving a word-search or Boggle board would use: Start at the top left letter, then scan the adjacent letters that together begin forming words, continuing this way until all the words have been formed from that starting position, and then starting over for every other letter on the board.<br><br>
+
+
+
+
+
+    </p>
+  </div>
+
+
+
+
+<!-- 
+Favorite words:
+yahooism: The behaviour or attitudes of yahoos; ignorant boorishness
+dodecafid: Divided into twelve parts
+vulcanizer: 
+moonshining: the practice of illegally making or smuggling distilled spirits
+hoplology: 
+slipslops: 
+-->
+
+
+
+  <!-- Contact Section -->
+  <div class="w3-padding-64 w3-content" id="contact">
+    <h2 class="w3-text-light-grey">Contact Me</h2>
+    <hr style="width:200px" class="w3-opacity">
+
+    <div class="w3-section">
+      <p><i class="fa fa-map-marker fa-fw w3-text-white w3-xxlarge w3-margin-right"></i> Berkeley, California</p>
+      <p><i class="fa fa-envelope fa-fw w3-text-white w3-xxlarge w3-margin-right"> </i> Email: lukefeilberg@gmail.com</p>
+    </div><br>
+   
+  <!-- End Contact Section -->
+  </div>
+  
+    <!-- Footer -->
+  <footer class="w3-content w3-padding-64 w3-text-grey w3-xlarge">
+  </footer>
+
+  </div>
+
+<!-- END PAGE CONTENT -->
+</div>
+
+</body>
+</html>
