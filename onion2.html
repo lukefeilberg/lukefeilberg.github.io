@@ -88,6 +88,8 @@ async function myFunction() {
     //import * as tf from '@tensorflow/tfjs';
 
 
+    console.log('Testing before model loaded')
+
     const model = await tf.loadLayersModel('model.json')
 
     // tf.loadLayersModel('http://cors.io/?https://github.com/lukefeilberg/lukefeilberg.github.io/blob/master/model.json').then(function(model) {
@@ -98,26 +100,38 @@ async function myFunction() {
     //   window.model = model;
     // });
 
-    console.log(model)
-    console.log('Testing')
+    console.log('Testing after model loaded')
 
     var input = document.getElementById("headline").value;
     
     predict(input);
 
+    var ex = [ 3867, 22689,  9924, 13701, 17932, 16288, 18077,  3780,  8449,
+           0,     0,     0,     0,     0,     0,     0,     0,     0,
+           0,     0,     0,     0,     0,     0,     0,     0,     0,
+           0,     0,     0,     0,     0,     0,     0,     0,     0,
+           0,     0,     0,     0,     0,     0,     0,     0,     0,
+           0,     0,     0,     0,     0,     0,     0,     0,     0,
+           0,     0,     0,     0,     0,     0,     0,     0,     0,
+           0]
 
-    var predict = function(input) {
-      if (window.model) {
-        window.model.predict([tf.tensor(input).reshape([1, 28, 28, 1])]).array().then(function(scores){
-          scores = scores[0];
-          predicted = scores.indexOf(Math.max(...scores));
-          $('#number').html(predicted);
-        });
-      } else {
-        // The model takes a bit to load, if we are too fast, wait
-        setTimeout(function(){predict(input)}, 50);
-      }
-    }
+    const prediction = model.predict(ex)
+
+    console.log(prediction)
+
+
+    // var predict = function(input) {
+    //   if (window.model) {
+    //     window.model.predict([tf.tensor(input).reshape([1, 28, 28, 1])]).array().then(function(scores){
+    //       scores = scores[0];
+    //       predicted = scores.indexOf(Math.max(...scores));
+    //       $('#number').html(predicted);
+    //     });
+    //   } else {
+    //     // The model takes a bit to load, if we are too fast, wait
+    //     setTimeout(function(){predict(input)}, 50);
+    //   }
+    // }
 
 
 }
