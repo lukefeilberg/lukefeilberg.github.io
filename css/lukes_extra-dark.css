@@ -1,0 +1,199 @@
+/* Setting color scheme to dark, makes scrollbars dark  */
+:root {
+  color-scheme: dark;
+}
+
+/* Basic dark mode stuff */
+body {
+    background-color: black;
+    color: rgb(221 221 222 / 1);
+}
+
+/* Messing with links */
+a {
+    color: #6a94bd;
+    background-color: transparent;
+    text-decoration: none;
+    -webkit-text-decoration-skip: objects;
+    font-weight: bold;
+}
+
+/* Adding some space (margin) to NavBar up top */
+.navbar {
+    margin-bottom: 1rem;
+    background-color: #272822!important;
+}
+
+/* Centering images and making 80% width */
+.img-fluid {
+    max-width: 80%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1.85rem;
+}
+.picture {
+    margin-left: .75rem;
+}
+
+.codehilite { 
+    /* background-color: #f7f7f7;
+    background: #f7f7f7; */
+    /* border: 1px solid #cfcfcf;
+    border-radius: 0.5em; */
+    border-radius: .65em; 
+    line-height: 1.21429em;
+} 
+
+/* This makes too big elements scrollable.
+   Wanted this for DataFrames but didn't work for .dataframe
+   and the divs before DataFrames aren't named. 
+*/
+div {
+    overflow: auto;
+}
+
+pre {
+    padding: 0.75em;  
+    /* With the padding need to override the margins */
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.dataframe {
+  padding-top: 1em;
+  margin-left: 2em;
+  margin-right: auto;
+  margin-top: 1.5em;
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  /* background-radius: .5em; */
+  color: #ced4da;
+  background-color: #272822;
+  font-size: 12px;
+  table-layout: fixed;
+}
+
+.dataframe thead {  
+    border-bottom: 1px solid black;
+    vertical-align: bottom;
+}
+
+.dataframe tr, .dataframe th, .dataframe td {
+    text-align: right;
+    vertical-align: middle;
+    padding: .5em .5em;
+    line-height: normal;
+    white-space: normal;
+    max-width: none;
+    border: none;
+    /* border-collapse: collapse; */
+/*     background: #212529 */
+}
+
+.dataframe tbody {
+  border-radius: .5em;
+}
+
+/* Coloring every other row inside tably body of DataFrames */
+.dataframe tbody tr:nth-child(2n+1) {
+    background: #494949;
+}
+
+/* Changing colors on hover */
+.dataframe tbody tr:nth-child(2n+1):hover {
+    background: #52521d;
+}
+.dataframe tbody tr:hover {
+  background-color: #52521d;
+}
+
+
+/* Header stuff */
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    margin-top: 1.85rem;
+    margin-bottom: .75rem;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+    color: white;
+} 
+/* Messing with links in headers mostly for project page */
+h2 a {
+    text-decoration:underline;
+    color:#ffffff;
+}
+h2 a:hover{
+    color:#d3d3d3;
+    text-decoration:underline;
+}
+h2 a:active, h2 a:visited {
+    text-decoration:underline;
+    color:#aeaeae;
+}
+
+/* DataFrame Dimensison Output */
+.dataframe-dimensions {
+    margin-top: .5rem;
+    margin-left: 2em;
+    font-size: .8rem;
+}
+
+
+/* DataFrame Dimensison Output */
+.dataframe-dimensions {
+    margin-top: .5rem;
+    margin-left: 2em;
+    font-size: .8rem;
+}
+
+/* Output Code */
+.outputcode {
+    color: #aaaaaa; /* Color of text */
+    background-color: #272822;
+    /* border-radius: .5rem; */
+    font-family: monospace;
+    font-size: .85rem;
+    margin: 1rem;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
+    padding: 0.5em;
+    white-space: pre;
+    overflow-y: auto;
+    max-height: 20rem;
+}
+
+/* Footer */
+footer {
+    border-top: 1px solid #d5d5d5;
+    font-size: .8rem;
+    margin-top: 2rem;
+}
+
+/* Stuff for Boggle page */
+
+/* Adding some margins */
+.boggle-input {
+    margin-top: 1.3rem;
+    margin-bottom: 1rem;
+}
+.boggle-generate-button {
+    margin-bottom: 0.5rem;
+}
+.boggle-board {
+    margin: 0.75rem;
+    min-height: 9.5rem;
+}
+.boggle-words {
+    min-height: 1rem;
+}
+/* Nice round edges */
+button, input {
+    border-radius: 0.5rem;
+}
+button, input {
+  overflow: visible;
+  border-radius: 0.5rem;
+}

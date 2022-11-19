@@ -1,146 +1,141 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-157392322-1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+    <!-- Required meta tags for Bootstrap -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    gtag('config', 'UA-157392322-1');
-  </script>
+    <!-- Bootstrap CSS -->
+    <link 
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous"
+    >
 
-  <!-- Actual start of head -->
+    <!-- Pygment's code highlight -->
+    <link rel="stylesheet" type="text/css" href="css/monokai.css">
 
-  <title>Projects</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <style>
-  body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
-  .w3-row-padding img {margin-bottom: 12px}
-  /* Set the width of the sidebar to 120px */
-  .w3-sidebar {width: 120px;background: #222;}
-  /* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
-  #main {margin-left: 120px}
-  /* Remove margins from "page content" on small screens */
-  @media only screen and (max-width: 600px) {#main {margin-left: 0}}
-  </style>
+    <!-- Luke's extra highlights -->
+    <link rel="stylesheet" type="text/css" href="css/lukes_extra-dark.css">
+
+    <!-- MathJax boilerplate -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+      </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+
+
 
 </head>
 
-<body class="w3-black">
+<body>
 
-<!-- Icon Bar (Sidebar - hidden on small screens) -->
-<nav class="w3-sidebar w3-bar-block w3-small w3-hide-small w3-center">
-  <!-- Avatar image in top left corner -->
-  <img src="https://image.ibb.co/j8rFVo/meirl_SMALL_just_me_tho2.png" style="width:100%">
-  <a href="http://lukefeilberg.github.io/" class="w3-bar-item w3-button w3-padding-large w3-black">
-    <i class="fa fa-home w3-xxlarge"></i>
-    <p>HOME</p>
-  </a>
-  <a href="http://lukefeilberg.github.io" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
-    <i class="fa fa-user w3-xxlarge"></i>
-    <p>ABOUT</p>
-  </a>
-  <a href="http://lukefeilberg.github.io/projects.html" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
-    <i class="fa fa-eye w3-xxlarge"></i>
-    <p>PROJECTS</p>
-  </a>
-  <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
-    <i class="fa fa-envelope w3-xxlarge"></i>
-    <p>CONTACT</p>
-  </a>
-</nav>
+    <!-- Bootstrap needs to be in container to work properly -->
+    <div class="container">
 
-<!-- Navbar on small screens (Hidden on medium and large screens) -->
-<div class="w3-top w3-hide-large w3-hide-medium" id="myNavbar">
-  <div class="w3-bar w3-black w3-opacity w3-hover-opacity-off w3-center w3-small">
-    <a href="http://lukefeilberg.github.io" class="w3-bar-item w3-button" style="width:25% !important">HOME</a>
-    <a href="http://lukefeilberg.github.io" class="w3-bar-item w3-button" style="width:25% !important">ABOUT</a>
-    <a href="http://lukefeilberg.github.io/projects.html" class="w3-bar-item w3-button" style="width:25% !important">PROJECTS</a>
-    <a href="#contact" class="w3-bar-item w3-button" style="width:25% !important">CONTACT</a>
-  </div>
-</div>
+        <!-- Top Nav Bar -->
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+            <!-- Brand -->
+            <a class="navbar-brand" href="http://lukefeilberg.github.io">Luke Feilberg 🤠</a>
+            <!-- Toggler/collapsibe Button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="http://lukefeilberg.github.io">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="http://lukefeilberg.github.io/projects.html">Projects</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="http://lukefeilberg.github.io/blog.html">Blog</a>
+                </li> 
+              </ul>
+            </div> 
+          </nav>
+          
+
+        <!-- Jinja fills in the body below -->
+
+        <h1>Projects</h1>
+<h2><a href="http://lukefeilberg.github.io/onion.html">The Onion Classifier</a>🧅</h2>
+<ul>
+<li>Using the <a href="https://pushshift.io/">Pushshift</a> API for Reddit I create a dataset of 9,000 <a href="https://www.theonion.com/">Onion</a> headlines and 15,000 "Onion-like" headlines from the subreddit <a href="https://www.reddit.com/r/nottheonion/">r/NotTheOnion</a>.</li>
+<li>I then use Tensorflow/Keras to build some different neural networks to try to classify the headlines as real Onion or not and invite others to beat my "benchmark" ;-)</li>
+</ul>
+<h2><a href="http://lukefeilberg.github.io/boggle.html">Boggle</a>🔠</h2>
+<ul>
+<li>Play <a href="https://en.wikipedia.org/wiki/Boggle">Boggle</a> on any size board here!</li>
+<li>The board is generated using JavaScript and the longest words are found in an efficient manner using a Trie data structure which is explained in more detail beneath the Boggle board.</li>
+</ul>
+<h2><a href="http://lukefeilberg.github.io/blackjack.html">Blackjack Reinforcement Learning</a>🃏</h2>
+<ul>
+<li>Here I use reinforcement learning to try to learn the optimal blackjack playing strategy!</li>
+<li>In particular, the game is modeled as a Markov Decision Process and then Policy Iteration is performed to learn under what circumstances should someone draw or stop.</li>
+</ul>
+<h2><a href="http://lukefeilberg.github.io/labs_and_more_scrape.html">Dogs for Adoption - Scrape &amp; Text</a>🐶</h2>
+<ul>
+<li>The website <a href="https://labsandmore.org/dogs/">labsandmore.org</a> uploads dogs in California that are up for adoption but the waitlist fills up extremely fast and there's no notification system or email list. </li>
+<li>Thus I've been called to duty to scrape the website every hour and send a text when new dogs have been found for my friend looking to adopt.</li>
+</ul>
+<h2><a href="https://proofwiki.org/wiki/User:Lukefeilberg">Proof Contributions on Pr∞fWiki</a>📚</h2>
+<ul>
+<li><a href="https://proofwiki.org/wiki/Existence_of_Laurent_Series">Existence of Laurent Series</a><ul>
+<li>This proof is a fundamental building block in Complex Analysis.</li>
+</ul>
+</li>
+<li><a href="https://proofwiki.org/wiki/Bernoulli%27s_Theorem">Bernoulli's Theorem (Law of Large Numbers)</a><ul>
+<li>A <em>classic</em> result of Probability Theory! Was quite surprised it wasn't proved here already.</li>
+</ul>
+</li>
+<li><a href="https://proofwiki.org/wiki/Mean_Value_Theorem_for_Integrals/Generalization">Generalized Mean Value Theorem for Integrals</a><ul>
+<li>A fun proof in Real Analysis which helps in other Real Analysis proofs.</li>
+</ul>
+</li>
+<li><a href="https://proofwiki.org/wiki/Complex_Algebra/Examples/(z-1)%5E6_%2B_(z%2B1)%5E6_%3D_0">Roots of $(z-1)^6 + (z+1)^6 = 0$ are $\pm i \cot ( \pi /12), \pm i \cot  (5 \pi / 12), \pm i$</a><ul>
+<li>Another page had many examples of complex algebra but this was the only one lacking a proof which I found conspicuous...</li>
+</ul>
+</li>
+</ul>
+<h2><a href="https://github.com/lukefeilberg">Others on GitHub</a>👩‍💻</h2>
+<ul>
+<li>In the repo, <a href="https://github.com/lukefeilberg/impossible/blob/master/impossible%20twitter.ipynb">impossible</a>, I have a notebook where I use Selenium to scrape tweets past what the API allows, and use this scraper to get tweets referencing either Impossible Burgers or Beyond Burgers to run a sentiment analysis to see who Twitter thinks makes the better vegan burger 🥕</li>
+</ul>
+
+        <!-- End of Jinja filled in body -->
 
 
+        <!-- Footer -->
+        <footer class="footer">
 
+            <p>📫: lukefeilberg@gmail.com</p>
+        
+        </footer>
+        <!-- Footer -->
 
-<!-- Page Content -->
-<div class="w3-padding-large" id="main">
-  <!-- Header/Home -->
-  <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
-    <h1 class="w3-jumbo"><span class="w3-hide-small"></span>Projects</h1>
-    <!--<img src="https://image.ibb.co/fb6ay8/Death_Valley_Narrower.jpg" alt="whoops" class="w3-image" width="992" height="1108">
-    <p><i><sup>Death Valley National Park</sup></i></p>-->
-  </header>
-  
-  <!-- Portfolio Section -->
-<h2 class="w3-text-light-grey"><a href="http://lukefeilberg.github.io/onion.html">The Onion Classifier</a> <!--<i class="fa fa-sitemap">--> </i></h2>        
-      <p>Using the <a href="https://pushshift.io/" target="_blank"> Pushshift</a> API for Reddit a dataset is created consiting of 9,000 <a href="https://www.theonion.com/" target="_blank">Onion</a> headlines and 15,000 "Onion-like" headlines from the subreddit <a href="https://www.reddit.com/r/nottheonion/" target="_blank">r/NotTheOnion</a>. Then Tensorflow/Keras is used to build some different neural networks to try to classify the headlines as real Onion or not, achieving 87% validation accuracy.</p><br>
+    </div>
 
-<h2 class="w3-text-light-grey"><a href="http://lukefeilberg.github.io/boggle.html">Boggle</a></h2>
-      <p>Play <a href="https://en.wikipedia.org/wiki/Boggle">Boggle</a> on any size board here! The board is generated using Javascript and the longest words are found in an efficient manner using a Trie data structure which is explained in more detail beneath the Boggle board. </p><br>
-
-<h2 class="w3-text-light-grey"><a href="http://lukefeilberg.github.io/dmv.html">Voter Turnout/Suppression Regression</a></h2>
-      <p>Voter ID laws have caused concern claiming they may suppress voter turnout, particularly in counties that have DMV's open only one day a week or inconveniently located far away. Data is downloaded and scraped from the web to investigate whether the total hours DMV's are open and their average distance to poorer neighborhoods influences voter turnout in Alabama, a state with strict voter ID laws.</p><br>
-
-
-<h2 class="w3-text-light-grey"><a href="http://lukefeilberg.github.io/covid.html">Quick COVID-19 Map</a></h2>
-      <p>Using GeoPandas, Johns Hopkins COVID-19 data and US Census data I decided to look at how the cases of COVID-19 per milllion people evolved in the US over time.</p><br>
-
-
-<h2 class="w3-text-light-grey"><a href="http://lukefeilberg.github.io/impossible.html">Twitter Scraper</a></h2>
-      <p>As someone who eats a plant-based diet and interested in plant-based meat alternatives I wanted to compare people's opinions between the Impossible Burger and the Beyond Burger. To do this I use Selenium to scrape tweets containing either the phrase "beyond burger" or "impossible burger" then use VADER Sentiment Analysis to estimate the average sentiment of each tweet, which I finally compare through some regressions and visualizations.</p><br>
-
-<h2 class="w3-text-light-grey"><a href="http://lukefeilberg.github.io/blackjack.html">Blackjack Reinforcement Learning</a></h2>
-      <p>Using reinforcement learning to try to learn the optimal blackjack playing strategy. In particular, the game is modeled as a Markov Decision Process and then Policy Iteration is performed to learn under what circumstances should someone draw or stop.</p><br>
-
-<h2 class="w3-text-light-grey"><a href="http://lukefeilberg.github.io/labs_and_more_scrape.html">Dogs for Adoption Scrape and Text</a></h2>
-      <p>The website <a target="_blank" rel="noopener noreferrer" href="https://labsandmore.org/dogs/">labsandmore.org</a> uploads dogs in California that are up for adoption. The problem is the waitlist fills up extremely fast and there's no notification system or email list. Thus I've been called to duty to scrape the website every hour and send a text when new dogs have been found for my friend looking to adopt.</p><br>
-
-<h2 class="w3-text-light-grey"><a href="http://lukefeilberg.github.io/robot.html">Funky Party Robot</a></h2>
-      <p>A silly project making a robot "sing" with a piezo crystal and "dance" with a servo motor and LED lights.</p><br><br><br><br><br>
-
-
-
-  <!-- End Portfolio Section -->
-
-
-  <!-- Contact Section -->
-  <div class="w3-padding-64 w3-content" id="contact">
-    <h2 class="w3-text-light-grey">Contact Me</h2>
-    <hr style="width:200px" class="w3-opacity">
-
-    <div class="w3-section">
-      <p><i class="fa fa-map-marker fa-fw w3-text-white w3-xxlarge w3-margin-right"></i> Berkeley, California</p>
-      <p><i class="fa fa-envelope fa-fw w3-text-white w3-xxlarge w3-margin-right"> </i> Email: lukefeilberg@gmail.com</p>
-    </div><br>
-   
-  <!-- End Contact Section -->
-  </div>
-  
-    <!-- Footer -->
-  <footer class="w3-content w3-padding-64 w3-text-grey w3-xlarge">
-    <!--     <i class="fa fa-facebook-official w3-hover-opacity"></i>
-    <i class="fa fa-instagram w3-hover-opacity"></i>
-    <i class="fa fa-snapchat w3-hover-opacity"></i>
-    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-    <i class="fa fa-twitter w3-hover-opacity"></i>
-    <i class="fa fa-linkedin w3-hover-opacity"></i>
-    <p class="w3-medium">Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank" class="w3-hover-text-green">w3.css</a></p>     -->
-  <!-- End footer -->
-  </footer>
-
-  </div>
-
-<!-- END PAGE CONTENT -->
-</div>
+    <!-- Javascript libraries for Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </body>
+
 </html>

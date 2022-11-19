@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Required meta tags for Bootstrap -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link 
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous"
+    >
+
+    <!-- Pygment's code highlight -->
+    <link rel="stylesheet" type="text/css" href="css/monokai.css">
+
+    <!-- Luke's extra highlights -->
+    <link rel="stylesheet" type="text/css" href="css/lukes_extra-dark.css">
+
+    <!-- MathJax boilerplate -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+      </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+
+
+
+</head>
+
+<body>
+
+    <!-- Bootstrap needs to be in container to work properly -->
+    <div class="container">
+
+        <!-- Top Nav Bar -->
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+            <!-- Brand -->
+            <a class="navbar-brand" href="http://lukefeilberg.github.io">Luke Feilberg 🤠</a>
+            <!-- Toggler/collapsibe Button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="http://lukefeilberg.github.io">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="http://lukefeilberg.github.io/projects.html">Projects</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="http://lukefeilberg.github.io/blog.html">Blog</a>
+                </li> 
+              </ul>
+            </div> 
+          </nav>
+          
+
+        <!-- Jinja fills in the body below -->
+
+        <h1>Dogs for Adoption Scrape and Text! 🐶</h1>
+<p>The website <a href="https://labsandmore.org/dogs/">labsandmore.org/dogs</a> uploads dogs in California that are up for adoption. The problem is the waitlist fills up extremely fast and there's no notification system or email list.</p>
+<p>Thus I've been called to duty to scrape the website every hour and send a text when new dogs have been found for my friend looking to adopt! I use the Selenium package to scrape the website, Pandas for some of the minor data wrangling, and finally Yagmail to send the text (from email).</p>
+<h2>Importing packages 📦</h2>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">yagmail</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.common.keys</span> <span class="kn">import</span> <span class="n">Keys</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.common.action_chains</span> <span class="kn">import</span> <span class="n">ActionChains</span>
+</code></pre></div>
+
+<h2>Using Selenium to open website 🕸</h2>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Setting path and opening browser</span>
+<span class="n">path</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;C:\Users\lukef\AppData\Local\BrowserDriver\geckodriver.exe&#39;</span>
+
+<span class="c1"># Setting headless</span>
+<span class="n">options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">FirefoxOptions</span><span class="p">()</span>
+<span class="n">options</span><span class="o">.</span><span class="n">headless</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Firefox</span><span class="p">(</span><span class="n">executable_path</span> <span class="o">=</span> <span class="n">path</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">options</span><span class="p">)</span>
+
+<span class="c1"># Navigating to website</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://labsandmore.org/dogs/&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2>Scraping the breed, details, and names ℹ</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">breed</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">details</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">name</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<span class="c1"># First looping through breed and details elements</span>
+<span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_elements_by_xpath</span><span class="p">(</span><span class="s2">&quot;//div[@class=&#39;property-stats&#39;]//ul//li&quot;</span><span class="p">):</span>
+
+
+    <span class="c1"># Alternates between breed and details in the li (list) elements</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">breed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">li</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">li</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="c1"># Now looping through the name elements</span>
+<span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_elements_by_xpath</span><span class="p">(</span><span class="s2">&quot;//div[@class=&#39;tile-footer&#39;]/div[@class=&#39;price&#39;]/a&quot;</span><span class="p">):</span>
+
+    <span class="n">name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">li</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="n">driver</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+
+<h2>Creating pandas dataframe 📈</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span><span class="n">breed</span><span class="o">=</span><span class="n">breed</span><span class="p">,</span><span class="n">details</span><span class="o">=</span><span class="n">details</span><span class="p">))</span>
+<span class="n">df</span>
+</code></pre></div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>breed</th>
+      <th>details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>America</td>
+      <td>Shepherd (mix)</td>
+      <td>Female, 12 years, 46 lbs. ID 7874</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Artichoke</td>
+      <td>Husky (mix)</td>
+      <td>Female, 2 years, 60 lbs. ID 11658</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Artichoke Pup - Broccoli</td>
+      <td>Husky - Shepherd (mix)</td>
+      <td>Female, 7 weeks, 5 lbs. ID 11659</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Artichoke Pup - Celery</td>
+      <td>Husky - Shepherd (mix)</td>
+      <td>Male, 7 weeks, 5 lbs. ID 11660</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Artichoke Pup - Cucumber</td>
+      <td>Husky - Shepherd (mix)</td>
+      <td>Male, 7 weeks, 5 lbs. ID 11661</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>155</th>
+      <td>Yoda</td>
+      <td>Labrador Retriever - American Staffordshire Te...</td>
+      <td>Male, 3 years, 54 lbs. ID 11751</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>Yoko - Adopted!</td>
+      <td>Boxer (purebred)</td>
+      <td>Female, 2 years, 63 lbs. ID 11365</td>
+    </tr>
+    <tr>
+      <th>157</th>
+      <td>Zinc</td>
+      <td>Terrier - Pointer (mix)</td>
+      <td>Female, 2 years, 32 lbs. ID 11531</td>
+    </tr>
+    <tr>
+      <th>158</th>
+      <td>Zipper - Adopted!</td>
+      <td>Labrador Retriever - Cattle Dog (mix)</td>
+      <td>Female, 2 years, 40 lbs. ID 11489</td>
+    </tr>
+    <tr>
+      <th>159</th>
+      <td>Zippy - Adopted!</td>
+      <td>Shepherd - Labrador Retriever (mix)</td>
+      <td>Male, 5 months, 22 lbs. ID 11794</td>
+    </tr>
+  </tbody>
+</table>
+<p><div class="dataframe-dimensions">160 rows × 3 columns</div></p>
+</div>
+
+<h2>Extracting the info from the details column 🐩</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span><span class="s1">&#39;age&#39;</span><span class="p">,</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;details&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">pat</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;(.*?),\s(.*?),\s(.*?)\.\sID\s(\d*)&#39;</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;details&#39;</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span>
+
+<span class="n">df</span>
+</code></pre></div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>breed</th>
+      <th>gender</th>
+      <th>age</th>
+      <th>weight</th>
+      <th>id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>America</td>
+      <td>Shepherd (mix)</td>
+      <td>Female</td>
+      <td>12 years</td>
+      <td>46 lbs</td>
+      <td>7874</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Artichoke</td>
+      <td>Husky (mix)</td>
+      <td>Female</td>
+      <td>2 years</td>
+      <td>60 lbs</td>
+      <td>11658</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Artichoke Pup - Broccoli</td>
+      <td>Husky - Shepherd (mix)</td>
+      <td>Female</td>
+      <td>7 weeks</td>
+      <td>5 lbs</td>
+      <td>11659</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Artichoke Pup - Celery</td>
+      <td>Husky - Shepherd (mix)</td>
+      <td>Male</td>
+      <td>7 weeks</td>
+      <td>5 lbs</td>
+      <td>11660</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Artichoke Pup - Cucumber</td>
+      <td>Husky - Shepherd (mix)</td>
+      <td>Male</td>
+      <td>7 weeks</td>
+      <td>5 lbs</td>
+      <td>11661</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>155</th>
+      <td>Yoda</td>
+      <td>Labrador Retriever - American Staffordshire Te...</td>
+      <td>Male</td>
+      <td>3 years</td>
+      <td>54 lbs</td>
+      <td>11751</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>Yoko - Adopted!</td>
+      <td>Boxer (purebred)</td>
+      <td>Female</td>
+      <td>2 years</td>
+      <td>63 lbs</td>
+      <td>11365</td>
+    </tr>
+    <tr>
+      <th>157</th>
+      <td>Zinc</td>
+      <td>Terrier - Pointer (mix)</td>
+      <td>Female</td>
+      <td>2 years</td>
+      <td>32 lbs</td>
+      <td>11531</td>
+    </tr>
+    <tr>
+      <th>158</th>
+      <td>Zipper - Adopted!</td>
+      <td>Labrador Retriever - Cattle Dog (mix)</td>
+      <td>Female</td>
+      <td>2 years</td>
+      <td>40 lbs</td>
+      <td>11489</td>
+    </tr>
+    <tr>
+      <th>159</th>
+      <td>Zippy - Adopted!</td>
+      <td>Shepherd - Labrador Retriever (mix)</td>
+      <td>Male</td>
+      <td>5 months</td>
+      <td>22 lbs</td>
+      <td>11794</td>
+    </tr>
+  </tbody>
+</table>
+<p><div class="dataframe-dimensions">160 rows × 6 columns</div></p>
+</div>
+
+<h2>Checking if dog is unavailable ❌</h2>
+<p>i.e. already adopted or the waiting list is full.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">df</span><span class="p">[</span><span class="s1">&#39;unavailable&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;adopted&#39;</span><span class="p">)</span> \
+                  <span class="o">|</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;list full&#39;</span><span class="p">)</span>
+<span class="n">df</span>
+</code></pre></div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>breed</th>
+      <th>gender</th>
+      <th>age</th>
+      <th>weight</th>
+      <th>id</th>
+      <th>unavailable</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>America</td>
+      <td>Shepherd (mix)</td>
+      <td>Female</td>
+      <td>12 years</td>
+      <td>46 lbs</td>
+      <td>7874</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Artichoke</td>
+      <td>Husky (mix)</td>
+      <td>Female</td>
+      <td>2 years</td>
+      <td>60 lbs</td>
+      <td>11658</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Artichoke Pup - Broccoli</td>
+      <td>Husky - Shepherd (mix)</td>
+      <td>Female</td>
+      <td>7 weeks</td>
+      <td>5 lbs</td>
+      <td>11659</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Artichoke Pup - Celery</td>
+      <td>Husky - Shepherd (mix)</td>
+      <td>Male</td>
+      <td>7 weeks</td>
+      <td>5 lbs</td>
+      <td>11660</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Artichoke Pup - Cucumber</td>
+      <td>Husky - Shepherd (mix)</td>
+      <td>Male</td>
+      <td>7 weeks</td>
+      <td>5 lbs</td>
+      <td>11661</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>155</th>
+      <td>Yoda</td>
+      <td>Labrador Retriever - American Staffordshire Te...</td>
+      <td>Male</td>
+      <td>3 years</td>
+      <td>54 lbs</td>
+      <td>11751</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>Yoko - Adopted!</td>
+      <td>Boxer (purebred)</td>
+      <td>Female</td>
+      <td>2 years</td>
+      <td>63 lbs</td>
+      <td>11365</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>157</th>
+      <td>Zinc</td>
+      <td>Terrier - Pointer (mix)</td>
+      <td>Female</td>
+      <td>2 years</td>
+      <td>32 lbs</td>
+      <td>11531</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>158</th>
+      <td>Zipper - Adopted!</td>
+      <td>Labrador Retriever - Cattle Dog (mix)</td>
+      <td>Female</td>
+      <td>2 years</td>
+      <td>40 lbs</td>
+      <td>11489</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>159</th>
+      <td>Zippy - Adopted!</td>
+      <td>Shepherd - Labrador Retriever (mix)</td>
+      <td>Male</td>
+      <td>5 months</td>
+      <td>22 lbs</td>
+      <td>11794</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+<p><div class="dataframe-dimensions">160 rows × 7 columns</div></p>
+</div>
+
+<h2>Reading in saved (old) dataframe 📉</h2>
+<div class="codehilite"><pre><span></span><code><span class="k">try</span><span class="p">:</span>
+    <span class="n">old</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;dogs.csv&#39;</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">old</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+<span class="n">old</span>
+</code></pre></div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>breed</th>
+      <th>gender</th>
+      <th>age</th>
+      <th>weight</th>
+      <th>id</th>
+      <th>unavailable</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>America</td>
+      <td>Shepherd (mix)</td>
+      <td>Female</td>
+      <td>12 years</td>
+      <td>46 lbs</td>
+      <td>7874</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Asteroid - (Medical)</td>
+      <td>Labrador Retriever - Cattle Dog (mix)</td>
+      <td>Female</td>
+      <td>3 years</td>
+      <td>28 lbs</td>
+      <td>11632</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Barcelona - Adopted!</td>
+      <td>Labrador Retriever - Shepherd (mix)</td>
+      <td>Female</td>
+      <td>4 months</td>
+      <td>15 lbs</td>
+      <td>11636</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Barnes - Waiting List Full</td>
+      <td>Labrador Retriever - Shepherd (mix)</td>
+      <td>Female</td>
+      <td>5 months</td>
+      <td>10 lbs</td>
+      <td>11474</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Bayleigh</td>
+      <td>Labrador Retriever (mix)</td>
+      <td>Female</td>
+      <td>4 years</td>
+      <td>47 lbs</td>
+      <td>11547</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>209</th>
+      <td>NaN</td>
+      <td>Shepherd (mix)</td>
+      <td>Female</td>
+      <td>1 year</td>
+      <td>42 lbs</td>
+      <td>11410</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>210</th>
+      <td>NaN</td>
+      <td>Labrador Retriever - Terrier (mix)</td>
+      <td>Female</td>
+      <td>5 years</td>
+      <td>30 lbs</td>
+      <td>10888</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>211</th>
+      <td>NaN</td>
+      <td>Labrador Retriever (mix)</td>
+      <td>Female</td>
+      <td>2 years</td>
+      <td>40 lbs</td>
+      <td>11409</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>212</th>
+      <td>NaN</td>
+      <td>Labrador Retriever (mix)</td>
+      <td>Male</td>
+      <td>1 year</td>
+      <td>60 lbs</td>
+      <td>11282</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>213</th>
+      <td>NaN</td>
+      <td>Labrador Retriever - Terrier (mix)</td>
+      <td>Female</td>
+      <td>1 year</td>
+      <td>35 lbs</td>
+      <td>11439</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p><div class="dataframe-dimensions">214 rows x 7 columns</div></p>
+</div>
+
+<h2>Send email function for if new dogs are found 📧</h2>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">send_email</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">sender_email</span> <span class="o">=</span> <span class="s1">&#39;lukefeilbergp@gmail.com&#39;</span>
+    <span class="n">receiver_email</span> <span class="o">=</span> <span class="s1">&#39;enter_phone_number_here@tmomail.net&#39;</span>
+    <span class="n">subject</span> <span class="o">=</span> <span class="s2">&quot;New dogs alert!&quot;</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="s1">&#39;Enter_Password_Here&#39;</span>
+
+    <span class="n">contents</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">yag</span> <span class="o">=</span> <span class="n">yagmail</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">sender_email</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
+
+    <span class="c1"># Displaying at most 5</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="mi">5</span><span class="p">)):</span>
+        <span class="n">contents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">contents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+                        <span class="o">+</span> <span class="s1">&#39;, &#39;</span>
+                        <span class="o">+</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;breed&#39;</span><span class="p">]</span>
+                        <span class="o">+</span> <span class="s1">&#39;, &#39;</span>
+                        <span class="o">+</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;age&#39;</span><span class="p">])</span>
+
+    <span class="n">contents</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;https://labsandmore.org/dogs/&#39;</span><span class="p">])</span>
+
+    <span class="n">yag</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">receiver_email</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">contents</span><span class="p">);</span>
+</code></pre></div>
+
+<h2>Checking for new dogs, sending email if so! 🐕</h2>
+<div class="codehilite"><pre><span></span><code><span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">old</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;New dogs found! :-)&#39;</span><span class="p">)</span>
+
+    <span class="n">new_dogs</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">old</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])]</span>
+
+    <span class="n">send_email</span><span class="p">(</span><span class="n">new_dogs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>New dogs found! :-)</p>
+<h2>Concatenating and dropping duplicates ♊</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">old_and_new</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span> <span class="n">old</span><span class="p">])</span>  
+
+<span class="n">old_and_new</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span><span class="n">keep</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">old_and_new</span>
+</code></pre></div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>breed</th>
+      <th>gender</th>
+      <th>age</th>
+      <th>weight</th>
+      <th>id</th>
+      <th>unavailable</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>America</td>
+      <td>Shepherd (mix)</td>
+      <td>Female</td>
+      <td>12 years</td>
+      <td>46 lbs</td>
+      <td>7874</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Artichoke</td>
+      <td>Husky (mix)</td>
+      <td>Female</td>
+      <td>2 years</td>
+      <td>60 lbs</td>
+      <td>11658</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Artichoke Pup - Broccoli</td>
+      <td>Husky - Shepherd (mix)</td>
+      <td>Female</td>
+      <td>7 weeks</td>
+      <td>5 lbs</td>
+      <td>11659</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Artichoke Pup - Celery</td>
+      <td>Husky - Shepherd (mix)</td>
+      <td>Male</td>
+      <td>7 weeks</td>
+      <td>5 lbs</td>
+      <td>11660</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Artichoke Pup - Cucumber</td>
+      <td>Husky - Shepherd (mix)</td>
+      <td>Male</td>
+      <td>7 weeks</td>
+      <td>5 lbs</td>
+      <td>11661</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>209</th>
+      <td>NaN</td>
+      <td>Shepherd (mix)</td>
+      <td>Female</td>
+      <td>1 year</td>
+      <td>42 lbs</td>
+      <td>11410</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>210</th>
+      <td>NaN</td>
+      <td>Labrador Retriever - Terrier (mix)</td>
+      <td>Female</td>
+      <td>5 years</td>
+      <td>30 lbs</td>
+      <td>10888</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>211</th>
+      <td>NaN</td>
+      <td>Labrador Retriever (mix)</td>
+      <td>Female</td>
+      <td>2 years</td>
+      <td>40 lbs</td>
+      <td>11409</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>212</th>
+      <td>NaN</td>
+      <td>Labrador Retriever (mix)</td>
+      <td>Male</td>
+      <td>1 year</td>
+      <td>60 lbs</td>
+      <td>11282</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>213</th>
+      <td>NaN</td>
+      <td>Labrador Retriever - Terrier (mix)</td>
+      <td>Female</td>
+      <td>1 year</td>
+      <td>35 lbs</td>
+      <td>11439</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p><div class="dataframe-dimensions">327 rows × 7 columns</div></p>
+</div>
+
+<h2>Saving to csv for next time 🛫</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">old_and_new</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;dogs.csv&#39;</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+<h2>Sending Texts Every Hour ⏰</h2>
+<p>The Jupyter Notebook (embedded all above) was used to build up the script from which I then essentially just copy-pasted over the cells to an actual .py file (<a href="https://github.com/lukefeilberg/dog_adoption_scrape/blob/master/labs_scrape_and_text.py">labs_scrape_and_text.py</a>). I then created a <a href="https://github.com/lukefeilberg/dog_adoption_scrape/blob/master/labs_bat.bat">batch script</a> which runs the python file and finally created a Task on Windows Task Scheduler that runs the batch script (which again runs the Python script) every hour every day from 10am to 8pm (only sending texts when new dogs are found). You can check out the <a href="https://github.com/lukefeilberg/dog_adoption_scrape">Github repo</a> to see it all in one place!</p>
+<p>An example text is shown below:</p>
+<div class="picture">
+  <img src="https://camo.githubusercontent.com/605144d44f71f57d1ebdc0e454be4b0e50bf94440e32757b0135af77f09ea80b/68747470733a2f2f692e6962622e636f2f48433942464d6b2f546578742d53637265656e73686f742e706e67">
+</div>
+<p><em>Note: The Husky "Artichoke" had many pups all uploaded at the same time in case that data looked off to you!</em></p>
+
+        <!-- End of Jinja filled in body -->
+
+
+        <!-- Footer -->
+        <footer class="footer">
+
+            <p>📫: lukefeilberg@gmail.com</p>
+        
+        </footer>
+        <!-- Footer -->
+
+    </div>
+
+    <!-- Javascript libraries for Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

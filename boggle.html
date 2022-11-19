@@ -1,99 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-157392322-1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+    <!-- Required meta tags for Bootstrap -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    gtag('config', 'UA-157392322-1');
-  </script>
+    <!-- Bootstrap CSS -->
+    <link 
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous"
+    >
 
-  <!-- Actual start of head -->
-  <title>Boggle</title>
-  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <style>
-  body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
-  .w3-row-padding img {margin-bottom: 12px}
-  /* Set the width of the sidebar to 120px */
-  .w3-sidebar {width: 120px;background: #222;}
-  /* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
-  #main {margin-left: 120px}
-  /* Remove margins from "page content" on small screens */
-  @media only screen and (max-width: 600px) {#main {margin-left: 0}}
-  </style>
+    <!-- Pygment's code highlight -->
+    <link rel="stylesheet" type="text/css" href="css/monokai.css">
+
+    <!-- Luke's extra highlights -->
+    <link rel="stylesheet" type="text/css" href="css/lukes_extra-dark.css">
+
+    <!-- MathJax boilerplate -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+      </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+
+
+
 </head>
 
-<body class="w3-black">
+<body>
 
-<!-- Icon Bar (Sidebar - hidden on small screens) -->
-<nav class="w3-sidebar w3-bar-block w3-small w3-hide-small w3-center">
-  <!-- Avatar image in top left corner -->
-  <img src="https://image.ibb.co/j8rFVo/meirl_SMALL_just_me_tho2.png" style="width:100%">
-  <a href="#" class="w3-bar-item w3-button w3-padding-large w3-black">
-    <i class="fa fa-home w3-xxlarge"></i>
-    <p>HOME</p>
-  </a>
-  <a href="http://lukefeilberg.github.io" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
-    <i class="fa fa-user w3-xxlarge"></i>
-    <p>ABOUT</p>
-  </a>
-  <a href="http://lukefeilberg.github.io/projects.html" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
-    <i class="fa fa-eye w3-xxlarge"></i>
-    <p>PROJECTS</p>
-  </a>
-  <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
-    <i class="fa fa-envelope w3-xxlarge"></i>
-    <p>CONTACT</p>
-  </a>
-</nav>
+    <!-- Bootstrap needs to be in container to work properly -->
+    <div class="container">
 
-<!-- Navbar on small screens (Hidden on medium and large screens) -->
-<div class="w3-top w3-hide-large w3-hide-medium" id="myNavbar">
-  <div class="w3-bar w3-black w3-opacity w3-hover-opacity-off w3-center w3-small">
-    <a href="http://lukefeilberg.github.io" class="w3-bar-item w3-button" style="width:25% !important">HOME</a>
-    <a href="http://lukefeilberg.github.io" class="w3-bar-item w3-button" style="width:25% !important">ABOUT</a>
-    <a href="http://lukefeilberg.github.io/projects.html" class="w3-bar-item w3-button" style="width:25% !important">PROJECTS</a>
-    <a href="#contact" class="w3-bar-item w3-button" style="width:25% !important">CONTACT</a>
-  </div>
+        <!-- Top Nav Bar -->
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+            <!-- Brand -->
+            <a class="navbar-brand" href="http://lukefeilberg.github.io">Luke Feilberg 🤠</a>
+            <!-- Toggler/collapsibe Button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="http://lukefeilberg.github.io">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="http://lukefeilberg.github.io/projects.html">Projects</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="http://lukefeilberg.github.io/blog.html">Blog</a>
+                </li> 
+              </ul>
+            </div> 
+          </nav>
+          
+
+        <!-- Jinja fills in the body below -->
+
+        <h1>Boggle 🔠</h1>
+<div class="boggle-input":>
+  Enter number of rows: 
+    <div class="boggle-input-row-col">
+      <input type="text" id="rows" value="10">
+    </div>
+  Enter number of columns: 
+    <div class="boggle-input-row-col">
+      <input type="text" id="cols" value="10">
+    </div>
 </div>
 
+<div class="boggle-generate-button">
+  <button onclick="generateAndSolveBoggle()">Generate Board!</button>
+</div>
 
+<div class="boggle-board">
+  <p id="board" style="font-family:courier;font-size:150%;"></p>
+</div>
 
-
-
-<!-- Page Content -->
-<div class="w3-padding-large" id="main">
-  <!-- Header/Home -->
-  <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
-    <h1 class="w3-jumbo"><span class="w3-hide-small"></span>BOGGLE :-)</h1>
-
-<br><br>
-ROWS: <input type="text" id="rows" value="10">
-&nbsp;&nbsp;
-COLS: <input type="text" id="cols" value="10">
-
-<br><br>
-<button onclick="myFunction()">Generate Board</button>
-
-<p id="board" style="font-family:courier;font-size:150%;"></p>
-<p id="words"></p>
-
+<div class = "boggle-words">
+  <p id="words"></p>
+</div>
 
 <script>
-async function myFunction() {
+async function generateAndSolveBoggle() {
     var rows = document.getElementById("rows").value;
     var cols = document.getElementById("cols").value;
-    
+
     //GENERATING BOARD:
     var letters = "abcdefghijklmnopqrstuvwxyz" //Maybe switch to ['a',...,'qu',...,'z']
     var board = []
@@ -105,7 +113,7 @@ async function myFunction() {
         board[i][j] = letters.charAt(Math.floor(rand() * letters.length))
       }
     }
-  
+
     //DISPLAYING BOARD:
     document.getElementById("board").innerHTML = "";
     for (var i = 0; i < rows; i++) {
@@ -113,14 +121,14 @@ async function myFunction() {
       document.getElementById("board").innerHTML += "<br>";
     }
 
-	//GETTING DICTIONARY
-	const library = await fetch('https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt', {});
-	words = await library.text();
-	words = words.split("\n");
-	//for loop gets rid of the "\n" chars (last word is fine though)
-	for (var i = 0; i < words.length - 1; i++) {
-	  words[i] = words[i].substring(0, words[i].length - 1);
-	}
+    //GETTING DICTIONARY
+    const library = await fetch('https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt', {});
+    words = await library.text();
+    words = words.split("\n");
+    //for loop gets rid of the "\n" chars (last word is fine though)
+    for (var i = 0; i < words.length - 1; i++) {
+      words[i] = words[i].substring(0, words[i].length - 1);
+    }
 
 
 
@@ -168,7 +176,7 @@ Trie.prototype.add = function(word) {
     } 
 
     node = node.children[word[i]]
-    
+
   }
 
   node.isWord = true;
@@ -177,13 +185,13 @@ Trie.prototype.add = function(word) {
 
 Trie.prototype.isPrefixOrWord = function(word) {
   /*
-  
+
   Returns 0 if not prefix or word ; "qzedf" returns 0
   Returns 1 if only prefix        ; "tabl"  returns 1
   Returns 2 if word               ; "table" returns 2
 
   */
-  
+
   var node = this.root; //Node to traverse each letter of given word
 
   for (var i = 0; i < word.length; i++) {
@@ -236,7 +244,7 @@ BiggestFirstQueue.prototype.print = function() {
 
   var i = 0;
 
-    document.getElementById("words").innerHTML = "Longest Words (length " + longestLength + "): <br>";
+    document.getElementById("words").innerHTML = "<b>Longest Words (length " + longestLength + "):</b> <br>";
 
   while (this.items[i].length == longestLength) {
 
@@ -247,7 +255,7 @@ BiggestFirstQueue.prototype.print = function() {
 
   secondLongestLength = this.items[i].length;
 
-    document.getElementById("words").innerHTML += "<br><br>Second Longest Words (length " + secondLongestLength + "): <br>";
+    document.getElementById("words").innerHTML += "<br><br><b>Second Longest Words (length " + secondLongestLength + "):</b> <br>";
 
   while (this.items[i].length == secondLongestLength) {
 
@@ -269,7 +277,7 @@ function solve(dict, board, rows, cols) {
 
   //Looping through board. 
   for (var i = 0; i < rows; i++) {
-      
+
     for (var j = 0; j < cols; j++) {
 
       traversed.add(i * rows + j);
@@ -327,81 +335,39 @@ function solveRec(dict, board, rows, cols, i, j, traversed, answers, word) {
 
 }
 
-
-
 </script>
 
+<h2>Trie to Understand Tries 🌲</h2>
+<p>The <a href="https://en.wikipedia.org/wiki/Boggle" target="_blank">boggle</a> board above is generated with new random letters with every click of the generate board button. From there you can try to find words by starting with any letter and looking to the letters adjacent to it (up, down, left, right, and all diagonals) and continuing in this manner to form words with the only caveat that you can not repeat the same letter/position twice.</p>
+<p>To find the longest words with Javascript, I first fetched ~479,000 English words from <a href="https://github.com/dwyl/english-words" target="_blank">github.com/dwyl/english-words</a> (which admittedly contains some pretty archaic words), then added every single word to my <a href="https://en.wikipedia.org/wiki/Trie">Trie</a> data structure.</p>
+<p>The trie data structure is essentially just a tree where the nodes are letters and as you descend down the tree the letters form words. At each node a letter is stored as well as whether or not this additional letter now forms a word. An example Trie is shown below with the words "he", "hey", "hell", "hello", "world", "word", and "words".</p>
+<p style="margin-left: 100px"> 
+<img src="https://i.ibb.co/grdRxrb/trie-pic.jpg" class="center" style="width:70%" ><br><br>
+</p>
 
-<br><br><br><br>
-</header>
+<p>We see from above how the seven words are stored in a very space-saving manner. It also may be becoming clear how storing words in this way is helpful to find the words on a Boggle board. After adding all the words to my Trie, I added a function <strong><code>isWordOrPrefix</code></strong> that takes a string as the input and returns whether the string is a word, a prefix to a word (as in those letters begin forming a word), or returns none. For example, <code>"hello"</code> returns <strong><code>"word"</code></strong>, <code>"hel"</code> returns <strong><code>"prefix"</code></strong>, and <code>"qyxq"</code> returns <strong><code>"none"</code></strong>.</p>
+<p>With all the words loaded into the Trie and the <strong><code>isWordOrPrefix</code></strong> function working, finding all the words contained on the Boggle board followed the same basic strategy anyone solving a word-search or Boggle board would use: Start at the top left letter, then scan the adjacent letters that together begin forming words, continuing this way until all the words have been formed from that starting position, and then starting over for every other letter on the board.</p>
+<h2>Future Improvements 🔨</h2>
+<p>I don't <em>really</em> know JavaScript and mostly just wanted to get something working rather than something I'd really expect people to use (at least more than once). So currently <strong>all</strong> the code is in a single <code>&lt;script&gt;</code> tag that runs in its entirety every time we click "Generate Board". What would make far more sense would be to load the whole dictionary into the trie data structure immediately as the page loads (better yet do it once and store the object!), then only generate and scan the new board each time we click Generate. Maybe one day 👩‍💻.</p>
 
-
-
-
-
-
-
-
-  <div class="w3-padding-16 w3-content" id="Actions">
-    <h2 class="w3-text-light-grey">Trie to Understand Tries</h2>
-    <hr style="width:360px" class="w3-opacity">
-    <p>The <a href="https://en.wikipedia.org/wiki/Boggle" target="_blank">boggle</a> board above is generated with new random letters with every click of the generate board button. From there you can try to find words by starting with any letter and looking to the letters adjacent to it (up, down, left, right, and all diagonals) and continuing in this manner to form words with the only caveat that you can not repeat the same letter/position twice.<br><br>
-
-    To find the longest words with Javascript, I first fetched ~479,000 English words from <a href="https://github.com/dwyl/english-words" target="_blank">github.com/dwyl/english-words</a> (which admittedly contains some pretty archaic words), then added every single word to my <a href="https://en.wikipedia.org/wiki/Trie">Trie</a> data structure.<br><br>
-
-    The trie data structure is essentially just a tree where the nodes are letters and as you descend down the tree the letters form words. At each node a letter is stored as well as whether or not this additional letter now forms a word. An example Trie is shown below with the words "he", "hey", "hell", "hello", "world", "word", and "words".
-
-    <p style="margin-left: 100px"> 
-    <img src="https://i.ibb.co/grdRxrb/trie-pic.jpg" class="center" style="width:70%" ><br><br>
-    </p>
-
-    We see from above how the seven words are stored in a very space-saving manner. It also may be becoming clear how storing words in this way is helpful to find the words on a Boggle board. After adding all the words to my Trie, I added a function <b>isWordOrPrefix</b> that takes a string as the input and returns whether the string is a word, a prefix to a word (as in those letters begin forming a word), or returns none. For example, "hello" returns <i>word</i>, "hel" returns <i>prefix</i>, and "qyxq" returns <i>none</i>.<br><br>
-
-    With all the words loaded into the Trie and the <b>isWordOrPrefix</b> function working, finding all the words contained on the Boggle board followed the same basic strategy anyone solving a word-search or Boggle board would use: Start at the top left letter, then scan the adjacent letters that together begin forming words, continuing this way until all the words have been formed from that starting position, and then starting over for every other letter on the board.<br><br>
+        <!-- End of Jinja filled in body -->
 
 
+        <!-- Footer -->
+        <footer class="footer">
 
+            <p>📫: lukefeilberg@gmail.com</p>
+        
+        </footer>
+        <!-- Footer -->
 
+    </div>
 
-    </p>
-  </div>
-
-
-
-
-<!-- 
-Favorite words:
-yahooism: The behaviour or attitudes of yahoos; ignorant boorishness
-dodecafid: Divided into twelve parts
-vulcanizer: 
-moonshining: the practice of illegally making or smuggling distilled spirits
-hoplology: 
-slipslops: 
--->
-
-
-
-  <!-- Contact Section -->
-  <div class="w3-padding-64 w3-content" id="contact">
-    <h2 class="w3-text-light-grey">Contact Me</h2>
-    <hr style="width:200px" class="w3-opacity">
-
-    <div class="w3-section">
-      <p><i class="fa fa-map-marker fa-fw w3-text-white w3-xxlarge w3-margin-right"></i> Berkeley, California</p>
-      <p><i class="fa fa-envelope fa-fw w3-text-white w3-xxlarge w3-margin-right"> </i> Email: lukefeilberg@gmail.com</p>
-    </div><br>
-   
-  <!-- End Contact Section -->
-  </div>
-  
-    <!-- Footer -->
-  <footer class="w3-content w3-padding-64 w3-text-grey w3-xlarge">
-  </footer>
-
-  </div>
-
-<!-- END PAGE CONTENT -->
-</div>
+    <!-- Javascript libraries for Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </body>
+
 </html>

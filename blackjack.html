@@ -1,203 +1,188 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
 
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-157392322-1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+    <!-- Required meta tags for Bootstrap -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    gtag('config', 'UA-157392322-1');
-  </script>
+    <!-- Bootstrap CSS -->
+    <link 
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous"
+    >
 
-    <!-- Actual start of head -->
-  <title>Blackjack</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <style>
-  body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
-  .w3-row-padding img {margin-bottom: 12px}
-  /* Set the width of the sidebar to 120px */
-  .w3-sidebar {width: 120px;background: #222;}
-  /* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
-  #main {margin-left: 120px}
-  /* Remove margins from "page content" on small screens */
-  @media only screen and (max-width: 600px) {#main {margin-left: 0}}
-  </style>
+    <!-- Pygment's code highlight -->
+    <link rel="stylesheet" type="text/css" href="css/monokai.css">
+
+    <!-- Luke's extra highlights -->
+    <link rel="stylesheet" type="text/css" href="css/lukes_extra-dark.css">
+
+    <!-- MathJax boilerplate -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+      </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+
+
+
 </head>
 
-<body class="w3-black">
+<body>
 
-<!-- Icon Bar (Sidebar - hidden on small screens) -->
-<nav class="w3-sidebar w3-bar-block w3-small w3-hide-small w3-center">
-  <!-- Avatar image in top left corner -->
-  <img src="https://image.ibb.co/j8rFVo/meirl_SMALL_just_me_tho2.png" style="width:100%">
-  <a href="http://lukefeilberg.github.io/" class="w3-bar-item w3-button w3-padding-large w3-black">
-    <i class="fa fa-home w3-xxlarge"></i>
-    <p>HOME</p>
-  </a>
-  <a href="http://lukefeilberg.github.io/" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
-    <i class="fa fa-user w3-xxlarge"></i>
-    <p>ABOUT</p>
-  </a>
-  <a href="http://lukefeilberg.github.io/projects.html" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
-    <i class="fa fa-eye w3-xxlarge"></i>
-    <p>PROJECTS</p>
-  </a>
-  <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
-    <i class="fa fa-envelope w3-xxlarge"></i>
-    <p>CONTACT</p>
-  </a>
-</nav>
+    <!-- Bootstrap needs to be in container to work properly -->
+    <div class="container">
 
-<!-- Navbar on small screens (Hidden on medium and large screens) -->
-<div class="w3-top w3-hide-large w3-hide-medium" id="myNavbar">
-  <div class="w3-bar w3-black w3-opacity w3-hover-opacity-off w3-center w3-small">
-    <a href="http://lukefeilberg.github.io" class="w3-bar-item w3-button" style="width:25% !important">HOME</a>
-    <a href="http://lukefeilberg.github.io" class="w3-bar-item w3-button" style="width:25% !important">ABOUT</a>
-    <a href="http://lukefeilberg.github.io/projects.html" class="w3-bar-item w3-button" style="width:25% !important">PROJECTS</a>
-    <a href="#contact" class="w3-bar-item w3-button" style="width:25% !important">CONTACT</a>
-  </div>
-</div>
+        <!-- Top Nav Bar -->
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+            <!-- Brand -->
+            <a class="navbar-brand" href="http://lukefeilberg.github.io">Luke Feilberg 🤠</a>
+            <!-- Toggler/collapsibe Button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="http://lukefeilberg.github.io">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="http://lukefeilberg.github.io/projects.html">Projects</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="http://lukefeilberg.github.io/blog.html">Blog</a>
+                </li> 
+              </ul>
+            </div> 
+          </nav>
+          
 
-<!-- Page Content -->
-<div class="w3-padding-large" id="main">
-  <!-- Header/Home -->
-  <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
-    <h1 class="w3-jumbo"><span class="w3-hide-small"></span>Blackjack Policy Iteration</h1>
-    <!-- <img src="https://image.ibb.co/fb6ay8/Death_Valley_Narrower.jpg" alt="whoops" class="w3-image" width="992" height="1108">
-    <p><i><sup>Death Valley National Park</sup></i></p> -->
-  </header>
+        <!-- Jinja fills in the body below -->
 
-  <!-- About Section -->
-  <div class="w3-padding-16 w3-content" id="blackjack intro">
-    <h2 class="w3-text-light-grey">Blackjack Fun!</h2>
-    <hr style="width:200px" class="w3-opacity">
-    <p>After completing CS 188 (Intro to Artificial Intelligence) at my school I felt inspired to try out some of the techniques I had learned. It occurred to me while taking the class that blackjack could be modeled as a Markov Decision Process (MDP), and thus I could learn the optimal policy (or strategy) by performing Policy Iteration on it. For more general conceptual info see <a href="http://ai.berkeley.edu/home.html" target="_blank">ai.berkeley.edu</a>.
-    
-    <br><br><i>
-    All the code for this project can be found at <a href="https://github.com/lukefeilberg/blackjack" target="_blank">github.com/lukefeilberg/blackjack</a>.
-    </i>
-
-    </p>
-  </div>
-    
-  <div class="w3-padding-16 w3-content" id="states">
-    <h2 class="w3-text-light-grey">States</h2>
-    <hr style="width:200px" class="w3-opacity">
-    <p>For my project I’ve denoted states as tuples (numAces, sum), where numAces denotes the number aces drawn so far, and sum denotes the running sum of the values of cards drawn so far (besides ace values since they can either be one or eleven, hence why numAces is stored). I then number the states 0 to 216 for later simplicity. Possible states are thus <br><br>
-
-    <p style="margin-left: 40px">
-    <font face="consolas">
-
-    0:&ensp;&nbsp;   (0,0),  1:&ensp;&nbsp;  (0,2),  2:&ensp;&nbsp;  (0,3), ..., 29:&ensp;  (0,30), 30:&ensp;  (0,31)<br>
-    31:&ensp;  (1,0), 32:&ensp;  (1,2), 33:&ensp;  (1,3), ..., 60:&ensp;  (1,30), 61:&ensp;  (1,31) <br>
-    62:&ensp;  (2,0), 63:&ensp;  (2,2), 64:&ensp;  (2,3), ..., 91:&ensp;  (2,30), 92:&ensp;  (2,31) <br>
-    ... <br>
-    186: (6,0), 187: (6,2), 188: (6,3), ..., 215: (6,30), 216: (6,31) </p> <br>
-    </font>
-
-Note: (n,1) is not included since drawing a 1 is actually drawing an ace and is thus captured by (n+1, 0) instead. Also note that ending at 6 aces was arbitrary but pulling 7 or more aces seemed sufficiently unlikely for me to care about how to play in that situation. Lastly having the sum run to 31 was an arbitrary choice in order to give a much more legible transition function.
-
-    </p>
-  </div>
-    
-
-  <div class="w3-padding-16 w3-content" id="Actions">
-    <h2 class="w3-text-light-grey">Actions</h2>
-    <hr style="width:200px" class="w3-opacity">
-    <p>In blackjack you have two possible actions: “draw” to draw another card and “stop” to end the game.
-    </p>
-  </div>
-    
-
-  <div class="w3-padding-16 w3-content" id="transitions">
-    <h2 class="w3-text-light-grey">Transitions</h2>
-    <hr style="width:200px" class="w3-opacity">
-    <p>I’ll make the assumption of drawing cards and replacing them back in the deck, this way our strategy doesn’t have to depend on the specific cards drawn/left (plus casinos often play with around eight decks). Thus there is a 1/13 chance when you draw you’ll pull an ace. Since there are 31 columns T(s, “draw”, s+31) = 1/13 (adding 31 takes you down exactly one row as should be clear by looking at the sample of states provided above). Similarly there is a 1/13 chance of pulling a 2 and increased your sum by 2, a 1/13 chance of pulling a 3 and increasing your sum by 3, and so forth giving: T(s, “draw”, s+k) = 1/13 for 2<=k<=9. Lastly, since 10, jack, queen, and kings all have a value of 10, T(s, “draw”, s+10) = 4/13. Any other transition is impossible and will return a value of zero. Since I’m going to need these values very often I’m going to compute them once in a matrix called drawMatrix during initialization.
-    </p>
-  </div>
-
-
-  <div class="w3-padding-16 w3-content" id="Rewards">
-    <h2 class="w3-text-light-grey">Rewards</h2>
-    <hr style="width:200px" class="w3-opacity">
-    <p>You only receive a reward in blackjack for exiting the game with a  sum less than or equal to 21. Thus if your action is stop you receive your sum plus the optimal value of your aces, or zero if this is greater than 21.<br>
-    Ex: R((0,10), “stop”, game over) = 10; R((1,10), “stop”, game over) = 21; R((2,10), “stop”, game over) = 0
-    </p>
-  </div>
-
-
-  <div class="w3-padding-16 w3-content" id="Policy Iteration">
-    <h2 class="w3-text-light-grey">Policy Iteration</h2>
-    <hr style="width:200px" class="w3-opacity">
-    <p>Policy Iteration begins by first defining an arbitrary initial policy, any policy will work but the closer to the optimal policy the quicker the algorithm converges. I’ll define the initial policy as “draw” no matter what to make initialization easy and to hammer home the point that we’ll find the optimal policy despite a terrible initial policy! Now we’ll repeat the following two steps until convergence 1. Policy Evaluation and 2. Policy Improvement. 
-    </p>
-  </div>
-
-
-  <div class="w3-padding-16 w3-content" id="Policy Evaluation">
-    <h2 class="w3-text-light-grey">Policy Evaluation</h2>
-    <hr style="width:200px" class="w3-opacity">
-    <p>
-
-In the Policy Evaluation step we evaluate the expected value of our score for each state. This will be a system of |S| equations given by the (lightly modified) Bellman Equation:<br>
-
+        <h1>Blackjack Policy Iteration 🃏</h1>
+<p>After completing CS 188 (Intro to Artificial Intelligence) at my school I felt inspired to try out some of the techniques I had learned. It occurred to me while taking the class that blackjack could be modeled as a Markov Decision Process (MDP), and thus I could learn the optimal policy (or strategy) by performing Policy Iteration on it. For more general conceptual info see <a href="http://ai.berkeley.edu/home.html" target="_blank">ai.berkeley.edu</a>.</p>
+<p>All the code for this project can be found at <a href="https://github.com/lukefeilberg/blackjack" target="_blank">github.com/lukefeilberg/blackjack</a>.</p>
+<h2>Modeling the States ♠</h2>
+<p>For this project I’ve first denoted states as tuples <code>(num_aces, sum)</code>, where <code>num_aces</code> denotes the number aces drawn so far, and <code>sum</code> denotes the running sum of the values of cards drawn so far minus the ace values since they can either be one or eleven (hence why <code>num_aces</code> is stored separately). These tuples are a bit clunky to work with so I then number them from 0 to 216 for later simplicity, shown in the next section!</p>
+<h2>Our Beautiful State Space 🗺</h2>
+<p>I'll denote our set of possible states with the symbol $\mathcal{S}$. We thus have $\mathcal{S} = [0,216]$, and each integer maps to the more interpretable tuple <code>(num_aces, sum)</code> as shown in the table below:</p>
 <p style="margin-left: 40px">
-<img src="https://image.ibb.co/j2VUAz/1_bellman.png" alt="whoops" class="w3-image" width="487" height="38"><br>
-</p>
+<font face="consolas">
 
-Since there’s no discount in blackjack (scores remain the same no matter the number of timesteps taken to obtain sum/score) we can set gamma = 1 yielding:<br>
-
-<p style="margin-left: 40px">
-<img src="https://image.ibb.co/hgEZce/2_bellman_no_gamma.png" class="w3-image" width="474" height="38"><br>
-</p>
-
-Now if the policy of a state is “draw” we obtain the following equation:<br>
-
-<p style="margin-left: 40px">
-<img src="https://image.ibb.co/bvZpAz/3_draw_bellman.png" class="w3-image" width="346" height="41"><br>
-<img src="https://image.ibb.co/fvXy3K/4_draw_bellman_expanded.png" class="w3-image" width="584" height="37"><br>
-<img src="https://image.ibb.co/h0mfHe/5_draw_bellman_v_moved_over.png" class="w3-image" width="643" height="42"><br>
-</p>
-
-Otherwise, if the policy of a state is “stop” we obtain the following equation:<br>
-
-<p style="margin-left: 40px">
-<img src="https://image.ibb.co/kqH9Az/6_stop_bellman.png" class="w3-image" width="253" height="37"><br>
-<img src="https://image.ibb.co/fahy3K/7_stop_bellman_moved_over.png" class="w3-image" width="292" height="39"><br>
-</p>
-
-Now we have our system of equations in matrix form and can use numpy’s built in system of equation solver to compute the value of each state under our given policy.
-
-
-
-    </p>
-  </div>
-
-
-  <div class="w3-padding-16 w3-content" id="Policy Improvement">
-    <h2 class="w3-text-light-grey">Policy Improvement</h2>
-    <hr style="width:200px" class="w3-opacity">
-    <p>
-Now that we have the value of each state under our given policy, let’s go ahead and improve our policy! Using our computed values of each state from above we will create a new policy that selects the action that gives the maximum score, according to the equation:<br>
-
-<p style="margin-left: 40px">
-<img src="https://image.ibb.co/iV2LHe/10_new_policy.png" class="w3-image" width="598" height="33"><br><br>
-</p>
-
-Now notice that if our action is “stop” we simply return the reward of stopping at that state. Therefore “stop” does not depend on our computed values of states. This means we only have to compute this value once and can then store it! We’ll do that in an array called stopValue. The values of “draw” in each state can be computed by multiplying our transition matrix by our array of computed values, let’s save this as an array called drawValue. Now we can define our new policy to be “draw” everywhere except the indices where stopValue is greater than drawValue. 
-If our new policy is equivalent to our old policy then the algorithm has converged and we have found the optimal policy! Otherwise we return to the policy evaluation step and repeat all the above until our policy converges.<br><br> 
-
-In our case we converge to the following policy (recall the formatting is (number of aces, running sum excluding aces):
-
-
-<div style="border:1px solid black;height:200px;width:800px;overflow-y:hidden;overflow-x:scroll;margin-left: 40px">
+0:&ensp;&nbsp;   (0,0),  1:&ensp;&nbsp;  (0,2),  2:&ensp;&nbsp;  (0,3), ..., 29:&ensp;  (0,30), 30:&ensp;  (0,31)<br>
+31:&ensp;  (1,0), 32:&ensp;  (1,2), 33:&ensp;  (1,3), ..., 60:&ensp;  (1,30), 61:&ensp;  (1,31) <br>
+62:&ensp;  (2,0), 63:&ensp;  (2,2), 64:&ensp;  (2,3), ..., 91:&ensp;  (2,30), 92:&ensp;  (2,31) <br>
+... <br>
+186: (6,0), 187: (6,2), 188: (6,3), ..., 215: (6,30), 216: (6,31) </p>
+<p></font>
+Note: <code>(n,1)</code> is not included for any <code>n</code> since drawing a 1 would actually be drawing an ace and is thus captured by <code>(n+1, 0)</code> instead. Also note that ending at 6 aces was arbitrary but pulling 7 or more aces seemed sufficiently unlikely for me to care about how to play in that situation. (Note too that casinos often play with seven or eight decks, thus why we have the possibility of more than 4 aces in the first place). Lastly having the <code>sum</code> run to 31 was an arbitrary choice in order to give a much more legible transition function.</p>
+<h2>Actions 🛹</h2>
+<p>In blackjack you have two possible actions:</p>
+<ol>
+<li>$\text{draw}$: draw another card and add to your sum.</li>
+<li>$\text{end}$: end the game with your current total.</li>
+</ol>
+<p>We'll denote the set of all possible actions as $\mathcal{A}$, thus we have $\mathcal{A}=\{\text{draw}, \text{stop}\}$.</p>
+<h2>Transitioning States 🔀</h2>
+<p>First, I’ll make the assumption that when we draw cards we'll replace them back in the deck -- this way our strategy doesn’t have to depend on the specific cards drawn/left (plus casinos often play with around eight decks anyways). </p>
+<p>Thus there is a $\frac{1}{13}$ chance when you draw you’ll pull an ace. Since there are 31 columns $T(s, \text{draw}, s+31) = \frac{1}{13}$ (recall that adding 31 takes you down exactly one row as should be clear by looking at the sample of states provided above). Similarly there is a $\frac{1}{13}$ chance of pulling a 2 and increasing your sum by 2, a $\frac{1}{13}$ chance of pulling a 3 and increasing your sum by 3, and so forth giving: $T(s, \text{draw}, s+k) = \frac{1}{13}, \;\, \forall k \in [2,9]$ . Lastly, since 10, jack, queen, and kings all have a value of 10, those four ranks yield: $T(s, \text{draw}, s+10) = \frac{4}{13}$. Any other transition is impossible and will return a value of zero. Since I’m going to need these values very often I’m going to compute them once in a matrix called <code>draw_matrix</code> during initialization. </p>
+<h2>Defining Rewards 🥇</h2>
+<p>You only receive a reward in blackjack for exiting the game with a sum less than or equal to 21. Thus if your action is stop you receive your sum plus the optimal value of your aces, or zero if this is greater than 21. For example:</p>
+<ul>
+<li>$R\left((0,10), \text{stop}, \text{game over} \right) = 10$ <ul>
+<li><em>No aces, a sum of 10 gives us a value of 10.</em></li>
+</ul>
+</li>
+<li>$R\left((1,10), \text{stop}, \text{game over} \right) = 21$ <ul>
+<li><em>One ace, and a sum of 10 yields 21 since that is the best case scenario and beats treating the ace as a one.</em></li>
+</ul>
+</li>
+<li>$R\left((2,10), \text{stop}, \text{game over} \right) = 12$ <ul>
+<li><em>With two aces and a sum of 10 we only don't bust if we treat both aces as ones -- thus yielding 12.</em></li>
+</ul>
+</li>
+<li>$R\left((2,20), \text{stop}, \text{game over} \right) = 0$ <ul>
+<li><em>With two aces and a sum of 20 there is no hope, we busted! Zero reward.</em></li>
+</ul>
+</li>
+</ul>
+<h2>Policy Iteration 🤹‍♂️</h2>
+<p>Policy Iteration begins by first defining an arbitrary initial policy, any policy will work but the closer to the optimal policy the quicker the algorithm converges. I’ll define the initial policy as “draw” no matter what to make initialization easy and to hammer home the point that we’ll find the optimal policy despite a terrible initial policy! Now we’ll repeat the following two steps until convergence:</p>
+<ol>
+<li><strong>Policy Evaluation</strong>, and </li>
+<li><strong>Policy Improvement</strong>. </li>
+</ol>
+<h2>Policy Evaluation 🔎</h2>
+<p>In the Policy Evaluation step we evaluate the expected value of our score for each state. This will be a system of $|\mathcal{S}|$ equations given by the (lightly modified) Bellman Equation:
+$$ 
+V^{\pi}(s) = \sum_{s' \in \mathcal{S}} T(s, \pi(s), s') \cdot \left( R \left(s,\pi(s), s' \right) + \gamma V^{\pi}(s') \right) 
+$$
+Since there's no discount in blackjack (scores remain the same no matter the number of timesteps taken to obtain sum/score) we can set $\gamma = 1$ yielding:</p>
+<p>$$ 
+V^{\pi}(s) = \sum_{s'\in \mathcal{S}} T(s, \pi(s), s') \cdot \left( R \left(s,\pi(s), s' \right) + V^{\pi}(s') \right) 
+$$
+Now if the policy of a state is “draw” we obtain the following equation:
+$$ 
+V^{\pi}(s) = \sum_{s'\in \mathcal{S}} T(s, \text{draw}, s') \cdot \left( R \left(s,\text{draw}, s' \right) + V^{\pi}(s') \right) 
+$$
+The reward for drawing is always zero, because we only get rewarded for stopping before 21! This gives us $R \left(s,\text{draw}, s' \right) = 0,\;\; \forall s, s' \in S$:</p>
+<p>$$
+\begin{align}
+V^{\pi}(s) &amp;= \sum_{s'\in \mathcal{S}} T(s, \text{draw}, s') \cdot \left(  V^{\pi}(s') \right)  \newline
+%
+V^{\pi}(s) &amp;= \frac{1}{13}\cdot V^{\pi}(s+31) 
+   + \left[ 
+      \sum_{k=2}^{9} \frac{1}{13} \cdot V^{\pi}(s+k) 
+     \right]
+   + \frac{4}{13} \cdot V^{\pi} (s+10)  \newline
+%
+\implies
+%
+0 &amp;= -V^{\pi}(s) + 
+   \frac{1}{13}\cdot V^{\pi}(s+31) 
+   + \left[ 
+      \sum_{k=2}^{9} \frac{1}{13} \cdot V^{\pi}(s+k) 
+     \right]
+   + \frac{4}{13} \cdot V^{\pi} (s+10)<br>
+\end{align}
+$$
+Otherwise, if the policy of a state is “stop”, there is no possible states to transition to (we'll denote this as an extra state just called $\text{game over}$) yielding simply:
+$$
+\begin{align}
+%
+  V^{\pi}(s) &amp;= R(s, \text{stop}, \text{game over})  \newline
+%
+  \implies
+  -R(s, \text{stop}, \text{game over}) &amp;= -V^{\pi}(s)
+%<br>
+\end{align}
+$$
+Now we have our system of equations in matrix form and can use <code>numpy</code>’s built in system of equation solver to compute the value of each state under our given policy.</p>
+<h2>Policy Improvement 📈</h2>
+<p>Now that we have the value of each state under our given policy, let’s go ahead and improve our policy! Using our computed values of each state from above we will create a new policy that selects the action that gives the maximum score, according to the equation:
+$$\pi_{i+1}(s) = \text{argmax}_{a\in\mathcal{A}} 
+  \sum_{s'\in\mathcal{S}} T \left( s, a, s' \right) 
+  \cdot \left[ R\left( s, a, s' \right) + \gamma V^{\pi}(s') \right]
+$$
+Now notice that if our action is <code>“stop”</code> we simply return the reward of stopping at that state. Therefore <code>“stop”</code> does not depend on our computed values of states. This means we only have to compute this value once and can then store it! We’ll do that in an array called <code>stop_value</code>. The values of <code>“draw”</code> in each state can be computed by multiplying our transition matrix by our array of computed values, let’s save this as an array called <code>draw_value</code>. Now we can define our new policy to be <code>“draw”</code> everywhere except the indices where <code>stop_value</code> is greater than <code>draw_value</code>. 
+If our new policy is equivalent to our old policy then the algorithm has converged and we have found the optimal policy! Otherwise we return to the policy evaluation step and repeat all the above until our policy converges.</p>
+<h2>Our Optimal Policy 🗻</h2>
+<p>In our case we converge to the following policy (recall the formatting is (number of aces, running sum excluding aces):</p>
+<div style="border:1px solid black;overflow-y:hidden;overflow-x:scroll;margin-left: 40px;white-space:nowrap">
 <p style="width:340%;">
 <font face="consolas">
 (0, 0): draw | (0, 2): draw | (0, 3): draw | (0, 4): draw | (0, 5): draw | (0, 6): draw | (0, 7): draw | (0, 8): draw | (0, 9): draw | (0, 10): draw | (0, 11): draw | (0, 12): draw | (0, 13): stop | (0, 14): stop | (0, 15): stop | (0, 16): stop | (0, 17): stop | (0, 18): stop | (0, 19): stop | (0, 20): stop | (0, 21): stop<br>
@@ -217,59 +202,28 @@ In our case we converge to the following policy (recall the formatting is (numbe
 </p>
 </div>
 
+<h2>Analysis 🔢</h2>
+<p>My computed policy seems fairly conservative, for example stopping at a sum of 13 with no aces. To aid me in investigating I recreated my program in a far more simplified manner letting aces only take on the value of one, thus states can be represented solely by the running sum of the cards drawn. Under this simplified version the optimal policy says to “stop” at states 12 and above. However, let’s consider state 14. We only will bust if we draw an 8, 9, 10, or face card. Thus we have a <code>6/13</code> chance of busting which is less than half. Let’s thus define a second policy to “stop” at states 15 and above. </p>
+<p>Now, when I play a hundred thousand games of blackjack under the computed optimal policy I get a score (or average sum) of about 16.02. When I play a hundred thousand games with my second strategy I get a score (average sum) of about 15.01. So our computed policy does have a higher expected score as we hoped. HOWEVER, when I play these two strategies against each other, the second policy performs better! In fact our computed policy wins 37,557 of 100,000 games and the second policy wins 54,209 (with the rest being ties). The lesson here is to be very careful how you define your reward function. I prioritized coming out with the highest score overall, rather than outscoring my component. Another interesting lesson is that a strategy with a higher expected score does not guarantee outperforming a lesser expected score strategy on average. </p>
+
+        <!-- End of Jinja filled in body -->
 
 
-    </p>
-  </div>
+        <!-- Footer -->
+        <footer class="footer">
 
+            <p>📫: lukefeilberg@gmail.com</p>
+        
+        </footer>
+        <!-- Footer -->
 
-  <div class="w3-padding-64 w3-content" id="Analysis">
-    <h2 class="w3-text-light-grey">Analysis</h2>
-    <hr style="width:200px" class="w3-opacity">
-    <p>
-My computed policy seems fairly conservative, for example stopping at a sum of 13 with no aces. To aid me in investigating I recreated my program in a far more simplified manner letting aces only take on the value of one, thus states can be represented solely by the running sum of the cards drawn. Under this simplified version the optimal policy says to “stop” at states 12 and above. However, let’s consider state 14. We only will bust if we draw an 8, 9, 10, or face card. Thus we have a 6/13 chance of busting which is less than half. Let’s thus define a second policy to “stop” at states 15 and above. <br><br>
-Now, when I play a hundred thousand games of blackjack under the computed optimal policy I get a score (or average sum) of about 16.02. When I play a hundred thousand games with my second strategy I get a score (average sum) of about 15.01. So our computed policy does have a higher expected score as we hoped. HOWEVER, when I play these two strategies against each other, the second policy performs better! In fact our computed policy wins 37,557 of 100,000 games and the second policy wins 54,209 (with the rest being ties). The lesson here is to be very careful how you define your reward function. I prioritized coming out with the highest score overall, rather than outscoring my component. Another interesting lesson is that a strategy with a higher expected score does not guarantee outperforming a lesser expected score strategy on average. 
+    </div>
 
-    </p>
-  </div>
-
-
-  <!-- End About Section -->
-
-
-  <!-- End Portfolio Section -->
-
-
-  <!-- Contact Section -->
-  <div class="w3-padding-64 w3-content" id="contact">
-    <br><br><br><br><br>
-    <h2 class="w3-text-light-grey">Contact Me</h2>
-    <hr style="width:200px" class="w3-opacity">
-
-    <div class="w3-section">
-      <p><i class="fa fa-map-marker fa-fw w3-text-white w3-xxlarge w3-margin-right"></i> Berkeley, California</p>
-      <p><i class="fa fa-envelope fa-fw w3-text-white w3-xxlarge w3-margin-right"> </i> Email: lukefeilberg@gmail.com</p>
-    </div><br>
-   
-  <!-- End Contact Section -->
-  </div>
-  
-    <!-- Footer -->
-  <footer class="w3-content w3-padding-64 w3-text-grey w3-xlarge">
-    <!--     <i class="fa fa-facebook-official w3-hover-opacity"></i>
-    <i class="fa fa-instagram w3-hover-opacity"></i>
-    <i class="fa fa-snapchat w3-hover-opacity"></i>
-    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-    <i class="fa fa-twitter w3-hover-opacity"></i>
-    <i class="fa fa-linkedin w3-hover-opacity"></i>
-    <p class="w3-medium">Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank" class="w3-hover-text-green">w3.css</a></p>     -->
-  <!-- End footer -->
-  </footer>
-
-  </div>
-
-<!-- END PAGE CONTENT -->
-</div>
+    <!-- Javascript libraries for Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </body>
+
 </html>
