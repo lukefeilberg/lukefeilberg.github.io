@@ -31,13 +31,11 @@
           fontCache: 'global'
         }
       };
-      </script>
+    </script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async
             src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
     </script>
-
-
 
 </head>
 
@@ -46,7 +44,7 @@
     <!-- Bootstrap needs to be in container to work properly -->
     <div class="container">
 
-        <!-- Top Nav Bar -->
+        <!-- Top Navigation Bar -->
         <nav class="navbar navbar-expand-md bg-dark navbar-dark">
             <!-- Brand -->
             <a class="navbar-brand" href="https://lukefeilberg.github.io">Luke Feilberg 🤠</a>
@@ -70,7 +68,6 @@
             </div> 
           </nav>
           
-
         <!-- Jinja fills in the body below -->
 
         <h1>Boggle 🔠</h1>
@@ -81,12 +78,14 @@
     </div>
   Enter number of columns: 
     <div class="boggle-input-row-col">
-      <input type="text" id="cols" value="10">
+      <input type="text" id="cols" value="10" onkeydown="if (event.keyCode == 13) {
+        document.getElementById('generate-boggle').click()
+      }">
     </div>
 </div>
 
 <div class="boggle-generate-button">
-  <button onclick="generateAndSolveBoggle()">Generate Board!</button>
+  <button id="generate-boggle" onclick="generateAndSolveBoggle()">Generate Board!</button>
 </div>
 
 <div class="boggle-board">
@@ -98,7 +97,31 @@
 </div>
 
 <script>
-async function generateAndSolveBoggle() {
+
+// Dictionary / Trie Datastructure -- defined globally.
+// Initialized on (page) load and used in every generateAndSolve call.
+var dict;
+
+window.onload = async function getDictionary() {
+    //GETTING ALL WORDS FROM GITHUB
+    const library = await fetch('https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt', {});
+    words = await library.text();
+    words = words.split("\n");
+    //for loop gets rid of the "\n" chars (last word is fine though)
+    for (var i = 0; i < words.length - 1; i++) {
+      words[i] = words[i].substring(0, words[i].length - 1);
+    }
+
+    //ADDING DICTIONARY WORDS INTO TRIE
+    dict = new Trie();   
+    for (var i = 0; i < words.length; i++) {
+      dict.add(words[i].toString());
+    }
+
+}
+
+function generateAndSolveBoggle() {
+    // GETTING INPUT (rows x cols)
     var rows = document.getElementById("rows").value;
     var cols = document.getElementById("cols").value;
 
@@ -121,25 +144,8 @@ async function generateAndSolveBoggle() {
       document.getElementById("board").innerHTML += "<br>";
     }
 
-    //GETTING DICTIONARY
-    const library = await fetch('https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt', {});
-    words = await library.text();
-    words = words.split("\n");
-    //for loop gets rid of the "\n" chars (last word is fine though)
-    for (var i = 0; i < words.length - 1; i++) {
-      words[i] = words[i].substring(0, words[i].length - 1);
-    }
-
-
-
-    //ADDING DICTIONARY WORDS INTO TRIE
-    var dict = new Trie();   
-    for (var i = 0; i <  words.length; i++) {
-      dict.add(words[i].toString());
-    }
-
     //SOLVE BOARD
-  solve(dict, board, rows, cols);  
+    solve(dict, board, rows, cols);  
 
 }
 
@@ -264,9 +270,10 @@ BiggestFirstQueue.prototype.print = function() {
 
   }
 
-
+  console.log("All answers:")
   console.log(this.items)
 }
+
 //---------------------------------------------------------------------
 //FINDING WORDS (ANSWERS) IN BOARD
 
@@ -348,7 +355,15 @@ function solveRec(dict, board, rows, cols, i, j, traversed, answers, word) {
 <p>We see from above how the seven words are stored in a very space-saving manner. It also may be becoming clear how storing words in this way is helpful to find the words on a Boggle board. After adding all the words to my Trie, I added a function <strong><code>isWordOrPrefix</code></strong> that takes a string as the input and returns whether the string is a word, a prefix to a word (as in those letters begin forming a word), or returns none. For example, <code>"hello"</code> returns <strong><code>"word"</code></strong>, <code>"hel"</code> returns <strong><code>"prefix"</code></strong>, and <code>"qyxq"</code> returns <strong><code>"none"</code></strong>.</p>
 <p>With all the words loaded into the Trie and the <strong><code>isWordOrPrefix</code></strong> function working, finding all the words contained on the Boggle board followed the same basic strategy anyone solving a word-search or Boggle board would use: Start at the top left letter, then scan the adjacent letters that together begin forming words, continuing this way until all the words have been formed from that starting position, and then starting over for every other letter on the board.</p>
 <h2>Future Improvements 🔨</h2>
-<p>I don't <em>really</em> know JavaScript and mostly just wanted to get something working rather than something I'd really expect people to use (at least more than once). So currently <strong>all</strong> the code is in a single <code>&lt;script&gt;</code> tag that runs in its entirety every time we click "Generate Board". What would make far more sense would be to load the whole dictionary into the trie data structure immediately as the page loads (better yet do it once and store the object!), then only generate and scan the new board each time we click Generate. Maybe one day 👩‍💻.</p>
+<p>Since revamping my website I finally decided to update this page a little and implement a few things that were once in this "Future Improvements" section.</p>
+<ol>
+<li>A big improvement is I now (finally) load all the dictionary words and add them to the trie data structure only <em>once</em> on pageload, and then reuse it every time the button is clicked. <ul>
+<li>I lazily just defined the trie data structure to be global as a cursory Google search didn't show me a simple way to pass values defined from a <code>window.onload</code> function call to a function triggered from a button's <code>onclick</code> value.</li>
+</ul>
+</li>
+<li>Pretty small, but I'm a bit of a keyboard warrior and don't love using my mouse, so as a small UX tweak I added a little <code>onkeydown</code> event to the row and column input elements to click the Generate Board button for you when you type Enter. 💁‍♀️</li>
+</ol>
+<p>I still don't <em>really</em> know JavaScript and the goal has remained to just have something that works rather than follows all best practices, so I'm sure there are definitely more improvements to be made but I will probably leave at as this for the time-being.👨‍💻 </p>
 
         <!-- End of Jinja filled in body -->
 
