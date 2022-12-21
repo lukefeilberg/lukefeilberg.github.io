@@ -61,6 +61,7 @@ pre {
     margin-bottom: 0;
 }
 
+/* Dataframe formatting */
 .dataframe {
   padding-top: 1em;
   margin-left: 2em;
