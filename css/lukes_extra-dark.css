@@ -24,6 +24,21 @@ a {
     background-color: #272822!important;
 }
 
+/* Fixing Horizontal Lines (`---` in Markdown) */
+hr {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    border: 0;
+    border-top: 1.5px solid rgb(157 157 157);
+}
+
+/* Fixing when code hilite doesn't work. Making text white
+ - Happens with bash/shell blocks
+*/
+pre code {
+    color: #f8f8f2;;
+}
+
 /* Centering images and making 80% width */
 .img-fluid {
     max-width: 80%;

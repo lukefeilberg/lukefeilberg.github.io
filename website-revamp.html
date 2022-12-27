@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Luke</title>
+    <link rel="icon" type="image/png" href="images/favicon-mirrored.png">
+
+    <!-- Required meta tags for Bootstrap -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link 
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous"
+    >
+
+    <!-- Pygment's code highlight -->
+    <link rel="stylesheet" type="text/css" href="css/monokai.css">
+
+    <!-- Luke's extra highlights -->
+    <link rel="stylesheet" type="text/css" href="css/lukes_extra-dark.css">
+
+    <!-- MathJax boilerplate -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+
+</head>
+
+<body>
+
+    <!-- Bootstrap needs to be in container to work properly -->
+    <div class="container">
+
+        <!-- Top Navigation Bar -->
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+            <!-- Brand -->
+            <a class="navbar-brand" href="https://lukefeilberg.github.io">Luke Feilberg 🤠</a>
+            <!-- Toggler/collapsibe Button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="https://lukefeilberg.github.io">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="https://lukefeilberg.github.io/projects.html">Projects</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="https://lukefeilberg.github.io/blog.html">Blog</a>
+                </li> 
+              </ul>
+            </div> 
+          </nav>
+          
+        <!-- Jinja fills in the body below -->
+
+        <h1>Revamping my website💻</h1>
+<h2>Background</h2>
+<p>Originally, this site was some free HTML/CSS template I found online and I put the few pages together editing the raw HTML alone. Worse yet, I wanted to share my work from some Jupyter Notebooks which I would export as HTML and just dump in the middle of the template -- which needless to say did not integrate well with the site and did not look good. It all sufficed for my original purpose of just hobbling something together but it was both a bit tedious and ugly.</p>
+<p>And it sat that way for a few years until I</p>
+<ol>
+<li>Started getting a bit more interested in web development adjacent stuff and</li>
+<li>Decided it would be nice to <del>scream my thoughts into the void</del> write more. 📝</li>
+</ol>
+<p>Really my only requirements were to be able to write Markdown posts and have Jupyter Notebooks (which can be converted to mostly Markdown) be able to be integrated nicely as well. I looked into some static site generators (even <a href="https://github.com/Frozen-Flask/Frozen-Flask">Frozen-Flask</a> since I was doing a little bit of Flask at my last job) but everything felt like either overkill or was missing something. So I settled on the following, detailed in the next section. </p>
+<h3>Flow</h3>
+<ol>
+<li>Start with a base template HTML file.</li>
+<li>Write Markdown files for posts - <em>And Jupyter notebooks can be converted to Markdown!</em></li>
+<li>Run a Markdown to HTML script, looping over desired Markdown files.</li>
+<li>Plop the Markdown-converted HTML into the template HTML file and call it a day.</li>
+</ol>
+<h3>In case a single soul on the lonely internet ever wonders 🤔</h3>
+<p>On the off-chance it's ever helpful to someone else (or perhaps just for my own sake), I've compiled my notes a bit along the way and detailed it all below. You can also either skip to the TLDR section for a high level overview, or check out the <a href="https://github.com/lukefeilberg/lukefeilberg.github.io">repo</a> directly. </p>
+<hr>
+<h2>Base HTML</h2>
+<p>Nothing too fancy is going on with the base HTML and you can skip me talking about it and view it directly <a href="https://github.com/lukefeilberg/lukefeilberg.github.io/blob/master/templates/base.html">here</a> if you care to. I've only got two lines of classic HTML boilerplate up top:</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;en&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>And then some guts in my head and body tags that I'll get to in the following sections. </p>
+<h3>Bootstrap 👢</h3>
+<p><a href="https://getbootstrap.com/docs/3.4/">Bootstrap</a> takes care of making everything look a bit nicer and giving me a nice Navigation Bar that scales down from desktop to mobile devices nicely. It makes up most of my boilerplate and there's probably some lighter weight solutions that would've sufficed but Bootstrap seems pretty popular which piqued my interest and if I ever am compelled to use more of its features it'll be easy to do so. That said, Bootstrap is very easy to set up -- in fact, you don't even have to download it! You can just link to it. Here's a (simplified) version of my <code>head</code> tag with the Bootstrap boilerplate:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+
+    <span class="c">&lt;!-- Required meta tags for Bootstrap --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;</span><span class="p">&gt;</span>
+
+    <span class="c">&lt;!-- Bootstrap CSS --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span>
+        <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span>
+        <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;</span>
+        <span class="na">integrity</span><span class="o">=</span><span class="s">&quot;sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm&quot;</span>
+        <span class="na">crossorigin</span><span class="o">=</span><span class="s">&quot;anonymous&quot;</span>
+    <span class="p">&gt;</span>
+
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>Now, inside the <code>body</code> tag, everything must additionally be in a container class div for Bootstrap to work properly. There's also a few JavaScript you must call for Bootstrap to work properly too. I've also got my Bootstrap Navigation Bar at the top of my <code>body</code> tag. So all the Bootstrap related elements in the body look like:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+
+    <span class="c">&lt;!-- Bootstrap needs to be in container to work properly --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;container&quot;</span><span class="p">&gt;</span>
+
+        <span class="c">&lt;!-- Top Navigation Bar --&gt;</span>
+        <span class="p">&lt;</span><span class="nt">nav</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;navbar navbar-expand-md bg-dark navbar-dark&quot;</span><span class="p">&gt;</span>
+            <span class="c">&lt;!-- Brand --&gt;</span>
+            <span class="p">&lt;</span><span class="nt">a</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;navbar-brand&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://lukefeilberg.github.io&quot;</span><span class="p">&gt;</span>Luke Feilberg 🤠<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+            <span class="c">&lt;!-- Toggler/collapsibe Button --&gt;</span>
+            <span class="p">&lt;</span><span class="nt">button</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;navbar-toggler&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;button&quot;</span> <span class="na">data-toggle</span><span class="o">=</span><span class="s">&quot;collapse&quot;</span> <span class="na">data-target</span><span class="o">=</span><span class="s">&quot;#collapsibleNavbar&quot;</span><span class="p">&gt;</span>
+              <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;navbar-toggler-icon&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+            <span class="c">&lt;!-- Navbar links --&gt;</span>
+            <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;collapse navbar-collapse&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;collapsibleNavbar&quot;</span><span class="p">&gt;</span>
+              <span class="p">&lt;</span><span class="nt">ul</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;navbar-nav&quot;</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">li</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;nav-item&quot;</span><span class="p">&gt;</span>
+                  <span class="p">&lt;</span><span class="nt">a</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;nav-link&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://lukefeilberg.github.io&quot;</span><span class="p">&gt;</span>Home<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+                <span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">li</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;nav-item&quot;</span><span class="p">&gt;</span>
+                  <span class="p">&lt;</span><span class="nt">a</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;nav-link&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://lukefeilberg.github.io/projects.html&quot;</span><span class="p">&gt;</span>Projects<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+                <span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">li</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;nav-item&quot;</span><span class="p">&gt;</span>
+                  <span class="p">&lt;</span><span class="nt">a</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;nav-link&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://lukefeilberg.github.io/blog.html&quot;</span><span class="p">&gt;</span>Blog<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+                <span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+              <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+          <span class="p">&lt;/</span><span class="nt">nav</span><span class="p">&gt;</span>
+          <span class="c">&lt;!-- End Navigation Bar --&gt;</span>
+          
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+    <span class="c">&lt;!-- Javascript libraries for Bootstrap --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://code.jquery.com/jquery-3.2.1.slim.min.js&quot;</span> <span class="na">integrity</span><span class="o">=</span><span class="s">&quot;sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN&quot;</span> <span class="na">crossorigin</span><span class="o">=</span><span class="s">&quot;anonymous&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js&quot;</span> <span class="na">integrity</span><span class="o">=</span><span class="s">&quot;sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q&quot;</span> <span class="na">crossorigin</span><span class="o">=</span><span class="s">&quot;anonymous&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js&quot;</span> <span class="na">integrity</span><span class="o">=</span><span class="s">&quot;sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl&quot;</span> <span class="na">crossorigin</span><span class="o">=</span><span class="s">&quot;anonymous&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h3>Pygments 🎨</h3>
+<p>I use <a href="https://pygments.org/">Pygments</a> for all my syntax highlighting. I like the <a href="https://pygments.org/styles/">Monokai</a> theme so that's what I use. You can generate the CSS file (after downloading Pygments and adding it to your path) with a command like:</p>
+<div class="codehilite"><pre><span></span><code>pygmentize -S monokai -f html -a .codehilite &gt; monokai.css
+</code></pre></div>
+
+<p>Then you just need to reference this CSS stylesheet in the <code>head</code> tag (assuming you put the file in a <code>css</code> folder):</p>
+<div class="codehilite"><pre><span></span><code>    <span class="c">&lt;!-- Pygment&#39;s code highlight --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;css/monokai.css&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h3>MathJax 🔢</h3>
+<p>In order to render LaTeX I use <a href="https://www.mathjax.org/">MathJax</a>. This is super easy to plop right in with no downloads necessary! (Though I'm sure you could download and do it all yourself if you're inclined). In the head tag I simply have:</p>
+<div class="codehilite"><pre><span></span><code>    <span class="c">&lt;!-- MathJax boilerplate --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+      <span class="nx">MathJax</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">tex</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">inlineMath</span><span class="o">:</span> <span class="p">[[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;$&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;\\(&#39;</span><span class="p">,</span> <span class="s1">&#39;\\)&#39;</span><span class="p">]]</span>
+        <span class="p">},</span>
+        <span class="nx">svg</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">fontCache</span><span class="o">:</span> <span class="s1">&#39;global&#39;</span>
+        <span class="p">}</span>
+      <span class="p">};</span>
+    <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://polyfill.io/v3/polyfill.min.js?features=es6&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;MathJax-script&quot;</span> <span class="na">async</span>
+            <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="c">&lt;!-- End MathJax boilerplate --&gt;</span>
+</code></pre></div>
+
+<p>I like to use dollar signs for my inline math, hence that configuration above. I don't actually use the slash parentheses but haven't yet been compelled to take it out.</p>
+<h3>Other Custom CSS Rules 🖌</h3>
+<p>I have some miscellaneous rules defined in the (not so beautifully named) <a href="https://github.com/lukefeilberg/lukefeilberg.github.io/blob/master/css/lukes_extra-dark.css">lukes_extra-dark.css</a>. The only thing in there  that might be of interest to others is my nice formatting of Pandas DataFrames. But I intend to cover that in more detail in a separate blog post -- keep an eye out!</p>
+<hr>
+<h2><code>convert.py</code></h2>
+<p>With the base HTML up and running, all I need is a little script to convert my Markdown files into HTML and plop the converted-HTML into the base template. I do this in my <a href="https://github.com/lukefeilberg/lukefeilberg.github.io/blob/master/convert.py">convert.py</a> script, which I'll detail the guts of below.</p>
+<h3>Python-Markdown</h3>
+<p>The heavy lifter here is the <a href="https://python-markdown.github.io/">Python-Markdown</a> package. It's quite simple to use, with a little <code>pip install markdown</code>, you can simply pass your Markdown text to it and get back out your HTML. It also has many <a href="https://python-markdown.github.io/extensions/">extensions</a> you can optionally use. For example, I use <a href="https://python-markdown.github.io/extensions/fenced_code_blocks/">Fenced Code Blocks</a> because I personally strongly dislike the convention of using only indents to indicate code and greatly prefer the triple ticks! And I of course use <a href="https://python-markdown.github.io/extensions/code_hilite/">CodeHilite</a> which uses Pygment for syntax highlighting. </p>
+<p>The relevant bit within <code>convert.py</code> is simply:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">markdown</span>
+<span class="kn">from</span> <span class="nn">markdown.extensions.codehilite</span> <span class="kn">import</span> <span class="n">CodeHiliteExtension</span>
+
+<span class="o">...</span>
+
+<span class="n">html_body</span> <span class="o">=</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span>
+    <span class="n">md_text</span><span class="p">,</span> 
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fenced_code&#39;</span><span class="p">,</span> <span class="n">CodeHiliteExtension</span><span class="p">(</span><span class="n">pygments_style</span><span class="o">=</span><span class="s1">&#39;monokai&#39;</span><span class="p">)],</span>
+    <span class="n">output_format</span><span class="o">=</span><span class="s1">&#39;html5&#39;</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>One thing to note that I perhaps didn't do super properly but haven't been compelled to perfect is use any of the MathJax Python Markdown extensions. I'm guessing these extensions solve some of the little pains I've faced, like Python Markdown interpreting two underscores on the same line as <em>emphasis</em> even if I'm inside a LaTeX block, but simply escaping one suffices -- and other little hiccups seem to always be solved with an extra escape character in the LaTeX.</p>
+<h2>Jinja</h2>
+<p><a href="https://palletsprojects.com/p/jinja/">Jinja</a> is a very powerful "template engine" for Python. You can do fancy stuff like <code>for</code> loops inside your HTML template to, say, loop over all blog posts and create a blog page without hardcoding every blog you've written.</p>
+<p>Frankly though, I haven't yet used it for anything other than just plopping my HTML-converted Markdown into my base HTML page -- but it's nice to know I can beef up my blog and perhaps other pages in the future with some of Jinja's nice features.</p>
+<p>Inside my base HTML <code>body</code> tag I have the following line:</p>
+<div class="codehilite"><pre><span></span><code>        <span class="c">&lt;!-- Jinja fills in the body below --&gt;</span>
+        {{ html_body }}
+        <span class="c">&lt;!-- End of Jinja filled in body --&gt;</span>
+</code></pre></div>
+
+<p>Then in my <code>convert.py</code>  I have (simplified a bit):</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">FileSystemLoader</span>
+
+<span class="c1"># Setting up environment and base template</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">loader</span><span class="o">=</span><span class="n">FileSystemLoader</span><span class="p">(</span><span class="s1">&#39;templates&#39;</span><span class="p">))</span>
+<span class="n">template</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="s1">&#39;base.html&#39;</span><span class="p">)</span>
+
+<span class="c1"># Render HTML body into template (i.e. plop it in!)</span>
+<span class="n">full_html</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">html_body</span><span class="o">=</span><span class="n">html_body</span><span class="p">)</span>
+</code></pre></div>
+
+<h3>Other little things 🌼</h3>
+<p>I do a little bit of manual processing of the Markdown file myself, particularly I remove the indentation that Jupyter Notebooks add to the output of cells since Python Markdown interprets it as code (and instead I format this myself in my custom CSS file). I also add my own div class called <code>"dataframe-dimensions"</code> to the dimensions that are always output after DataFrames from Jupyter Notebooks, which I then, again, stylize in my custom CSS file so they look nicer. I currently just do this with regular expressions. </p>
+<p>I also found it nice to use Python's <a href="https://docs.python.org/3/library/webbrowser.html">webbrowser</a> package in my script to (optionally) immediately open all the new files it generated. I also name the files differently if I'm testing new changes so that I can keep track of each version (I simply just append a datetime timestamp so files are ordered properly).</p>
+<p>And that's <em>pretty much</em> it. </p>
+<hr>
+<h2>Was it worth it?</h2>
+<p>I'm much happier with the way my site looks now. It ended up taking more time than I anticipated to put it all together but it was quite fun getting a little bit exposed to all the tech out there in the web development type world. </p>
+<hr>
+<h2>Too Long; Didn't Read (TLDR)</h2>
+<ul>
+<li>Base HTML<ul>
+<li>Uses <a href="https://getbootstrap.com/docs/3.4/">Bootstrap</a> CSS for a nice Navigation bar and generally seems to make everything work a bit better across mobile and desktop</li>
+<li><a href="https://pygments.org/">Pygment</a>'s code highlight</li>
+<li><a href="https://www.mathjax.org/">MathJax</a> for Latex</li>
+<li>Some extra custom styling in my own CSS file</li>
+</ul>
+</li>
+<li>I then use <a href="https://python-markdown.github.io/">Python Markdown</a> in my <a href="https://github.com/lukefeilberg/lukefeilberg.github.io/blob/master/convert.py">convert.py</a> script to convert my Markdown files into HTML<ul>
+<li>I use the <a href="https://python-markdown.github.io/extensions/fenced_code_blocks/">Fenced Code Blocks</a> extension so I can use triple tick code blocks that are much preferable in my opinion to indentation based code blocks</li>
+<li>And I use the <a href="https://python-markdown.github.io/extensions/code_hilite/">CodeHilite</a> extension to add code/syntax highlighting</li>
+</ul>
+</li>
+<li>The HTML generated from Python Markdown is then plopped into my base HTML page using <a href="https://palletsprojects.com/p/jinja/">jinja2</a> <ul>
+<li>Frankly, using jinja is a bit overkill for now since I'm currently only plopping the body HTML into the base but I may use more of the fancy features in the future!</li>
+</ul>
+</li>
+</ul>
+
+        <!-- End of Jinja filled in body -->
+
+
+        <!-- Footer -->
+        <footer class="footer">
+
+            <p>📫: lukefeilberg@gmail.com</p>
+        
+        </footer>
+        <!-- Footer -->
+
+    </div>
+
+    <!-- JavaScript libraries for Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
