@@ -74,6 +74,7 @@
         <!-- Jinja fills in the body below -->
 
         <h1>Revamping my website💻</h1>
+<p>Published: <strong>2022-12-01</strong></p>
 <h2>Background</h2>
 <p>Originally, this site was some free HTML/CSS template I found online and I put the few pages together editing the raw HTML alone. Worse yet, I wanted to share my work from some Jupyter Notebooks which I would export as HTML and just dump in the middle of the template -- which needless to say did not integrate well with the site and did not look good. It all sufficed for my original purpose of just hobbling something together but it was both a bit tedious and ugly.</p>
 <p>And it sat that way for a few years until I</p>
@@ -165,28 +166,28 @@
 </code></pre></div>
 
 <p>Then you just need to reference this CSS stylesheet in the <code>head</code> tag (assuming you put the file in a <code>css</code> folder):</p>
-<div class="codehilite"><pre><span></span><code>    <span class="c">&lt;!-- Pygment&#39;s code highlight --&gt;</span>
-    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;css/monokai.css&quot;</span><span class="p">&gt;</span>
+<div class="codehilite"><pre><span></span><code><span class="c">&lt;!-- Pygment&#39;s code highlight --&gt;</span>
+<span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;css/monokai.css&quot;</span><span class="p">&gt;</span>
 </code></pre></div>
 
 <h3>MathJax 🔢</h3>
 <p>In order to render LaTeX I use <a href="https://www.mathjax.org/">MathJax</a>. This is super easy to plop right in with no downloads necessary! (Though I'm sure you could download and do it all yourself if you're inclined). In the head tag I simply have:</p>
-<div class="codehilite"><pre><span></span><code>    <span class="c">&lt;!-- MathJax boilerplate --&gt;</span>
-    <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-      <span class="nx">MathJax</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="nx">tex</span><span class="o">:</span> <span class="p">{</span>
-          <span class="nx">inlineMath</span><span class="o">:</span> <span class="p">[[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;$&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;\\(&#39;</span><span class="p">,</span> <span class="s1">&#39;\\)&#39;</span><span class="p">]]</span>
-        <span class="p">},</span>
-        <span class="nx">svg</span><span class="o">:</span> <span class="p">{</span>
-          <span class="nx">fontCache</span><span class="o">:</span> <span class="s1">&#39;global&#39;</span>
-        <span class="p">}</span>
-      <span class="p">};</span>
-    <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://polyfill.io/v3/polyfill.min.js?features=es6&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;MathJax-script&quot;</span> <span class="na">async</span>
-            <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js&quot;</span><span class="p">&gt;</span>
-    <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-    <span class="c">&lt;!-- End MathJax boilerplate --&gt;</span>
+<div class="codehilite"><pre><span></span><code><span class="c">&lt;!-- MathJax boilerplate --&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="nx">MathJax</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">tex</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">inlineMath</span><span class="o">:</span> <span class="p">[[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;$&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;\\(&#39;</span><span class="p">,</span> <span class="s1">&#39;\\)&#39;</span><span class="p">]]</span>
+    <span class="p">},</span>
+    <span class="nx">svg</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">fontCache</span><span class="o">:</span> <span class="s1">&#39;global&#39;</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://polyfill.io/v3/polyfill.min.js?features=es6&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;MathJax-script&quot;</span> <span class="na">async</span>
+        <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="c">&lt;!-- End MathJax boilerplate --&gt;</span>
 </code></pre></div>
 
 <p>I like to use dollar signs for my inline math, hence that configuration above. I don't actually use the slash parentheses but haven't yet been compelled to take it out.</p>
@@ -215,9 +216,9 @@
 <p><a href="https://palletsprojects.com/p/jinja/">Jinja</a> is a very powerful "template engine" for Python. You can do fancy stuff like <code>for</code> loops inside your HTML template to, say, loop over all blog posts and create a blog page without hardcoding every blog you've written.</p>
 <p>Frankly though, I haven't yet used it for anything other than just plopping my HTML-converted Markdown into my base HTML page -- but it's nice to know I can beef up my blog and perhaps other pages in the future with some of Jinja's nice features.</p>
 <p>Inside my base HTML <code>body</code> tag I have the following line:</p>
-<div class="codehilite"><pre><span></span><code>        <span class="c">&lt;!-- Jinja fills in the body below --&gt;</span>
-        {{ html_body }}
-        <span class="c">&lt;!-- End of Jinja filled in body --&gt;</span>
+<div class="codehilite"><pre><span></span><code><span class="c">&lt;!-- Jinja fills in the body below --&gt;</span>
+{{ html_body }}
+<span class="c">&lt;!-- End of Jinja filled in body --&gt;</span>
 </code></pre></div>
 
 <p>Then in my <code>convert.py</code>  I have (simplified a bit):</p>
