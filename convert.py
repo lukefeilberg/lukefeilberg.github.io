@@ -9,18 +9,18 @@ import webbrowser
 
 # Settings
 open_browser = True
-testing = False
-md_files_to_convert = [Path(r"C:\Users\lukef\Documents\general\website\website-markdown-files\blog.md")]
+testing = True
+md_files_to_convert = []
 
 # All markdown files in local repo
-# md_files_to_convert.extend(list(Path.cwd().joinpath('markdown_files').iterdir()))
+md_files_to_convert.extend(list(Path.cwd().joinpath('markdown_files').iterdir()))
 
 # Individual files instead:
-# md_files_to_convert = [Path(r'markdown_files/boggle.md')]
+# md_files_to_convert = [Path(r'markdown_files/boggle_raw.md')]
 
 # All Obsidian files
 obsidian_md_files_dir = r'C:\Users\lukef\Documents\general\website\website-markdown-files'
-# md_files_to_convert.extend(list(Path(obsidian_md_files_dir).iterdir()))
+md_files_to_convert.extend(list(Path(obsidian_md_files_dir).iterdir()))
 
 def process_markdown_file(md_text):
     """Takes raw markdown text and fixes a few problems I've had.

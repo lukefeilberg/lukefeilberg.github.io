@@ -285,4 +285,10 @@ With all the words loaded into the Trie and the **`isWordOrPrefix`** function wo
 
 ## Future Improvements 🔨
 
-I don't *really* know JavaScript and mostly just wanted to get something working rather than something I'd really expect people to use (at least more than once). So currently **all** the code is in a single `<script>` tag that runs in its entirety every time we click "Generate Board". What would make far more sense would be to load the whole dictionary into the trie data structure immediately as the page loads (better yet do it once and store the object!), then only generate and scan the new board each time we click Generate. Maybe one day 👩‍💻.
+Since revamping my website I finally decided to update this page a little and implement a few things that were once in this "Future Improvements" section.
+
+1. A big improvement is I now (finally) load all the dictionary words and add them to the trie data structure only _once_ on pageload, and then reuse it every time the button is clicked.
+    -  I lazily just defined the trie data structure to be global as a cursory Google search didn't show me a simple way to pass values defined from a `window.onload` function call to a function triggered from a button's `onclick` value.
+2. Pretty small, but I'm a bit of a keyboard warrior and don't love using my mouse, so as a small UX tweak I added a little `onkeydown` event to the row and column input elements to click the Generate Board button for you when you type Enter. 💁‍♀️
+
+I still don't _really_ know JavaScript and the goal has remained to just have something that works rather than follows all best practices, so I'm sure there are definitely more improvements to be made but I will probably leave as is for the time-being.👨‍💻
