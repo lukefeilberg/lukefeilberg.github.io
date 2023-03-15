@@ -9,7 +9,7 @@ import webbrowser
 
 # Settings
 open_browser = True
-testing = True
+testing = False
 md_files_to_convert = []
 
 # All markdown files in local repo

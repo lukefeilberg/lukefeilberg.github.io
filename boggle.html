@@ -40,6 +40,9 @@
             src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
     </script>
 
+    <!-- Counter.dev -->
+    <script src="https://cdn.counter.dev/script.js" data-id="0aeed35e-dde5-4063-8903-dbb24d498964" data-utcoffset="-7"></script>
+
 </head>
 
 <body>
@@ -81,14 +84,12 @@
     </div>
   Enter number of columns: 
     <div class="boggle-input-row-col">
-      <input type="text" id="cols" value="10" onkeydown="if (event.keyCode == 13) {
-        document.getElementById('generate-boggle').click()
-      }">
+      <input type="text" id="cols" value="10">
     </div>
 </div>
 
 <div class="boggle-generate-button">
-  <button id="generate-boggle" onclick="generateAndSolveBoggle()">Generate Board!</button>
+  <button onclick="generateAndSolveBoggle()">Generate Board!</button>
 </div>
 
 <div class="boggle-board">
@@ -100,31 +101,7 @@
 </div>
 
 <script>
-
-// Dictionary / Trie Datastructure -- defined globally.
-// Initialized on (page) load and used in every generateAndSolve call.
-var dict;
-
-window.onload = async function getDictionary() {
-    //GETTING ALL WORDS FROM GITHUB
-    const library = await fetch('https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt', {});
-    words = await library.text();
-    words = words.split("\n");
-    //for loop gets rid of the "\n" chars (last word is fine though)
-    for (var i = 0; i < words.length - 1; i++) {
-      words[i] = words[i].substring(0, words[i].length - 1);
-    }
-
-    //ADDING DICTIONARY WORDS INTO TRIE
-    dict = new Trie();   
-    for (var i = 0; i < words.length; i++) {
-      dict.add(words[i].toString());
-    }
-
-}
-
-function generateAndSolveBoggle() {
-    // GETTING INPUT (rows x cols)
+async function generateAndSolveBoggle() {
     var rows = document.getElementById("rows").value;
     var cols = document.getElementById("cols").value;
 
@@ -147,8 +124,25 @@ function generateAndSolveBoggle() {
       document.getElementById("board").innerHTML += "<br>";
     }
 
+    //GETTING DICTIONARY
+    const library = await fetch('https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt', {});
+    words = await library.text();
+    words = words.split("\n");
+    //for loop gets rid of the "\n" chars (last word is fine though)
+    for (var i = 0; i < words.length - 1; i++) {
+      words[i] = words[i].substring(0, words[i].length - 1);
+    }
+
+
+
+    //ADDING DICTIONARY WORDS INTO TRIE
+    var dict = new Trie();   
+    for (var i = 0; i <  words.length; i++) {
+      dict.add(words[i].toString());
+    }
+
     //SOLVE BOARD
-    solve(dict, board, rows, cols);  
+  solve(dict, board, rows, cols);  
 
 }
 
@@ -273,10 +267,9 @@ BiggestFirstQueue.prototype.print = function() {
 
   }
 
-  console.log("All answers:")
+
   console.log(this.items)
 }
-
 //---------------------------------------------------------------------
 //FINDING WORDS (ANSWERS) IN BOARD
 
@@ -360,13 +353,13 @@ function solveRec(dict, board, rows, cols, i, j, traversed, answers, word) {
 <h2>Future Improvements 🔨</h2>
 <p>Since revamping my website I finally decided to update this page a little and implement a few things that were once in this "Future Improvements" section.</p>
 <ol>
-<li>A big improvement is I now (finally) load all the dictionary words and add them to the trie data structure only <em>once</em> on pageload, and then reuse it every time the button is clicked. <ul>
-<li>I lazily just defined the trie data structure to be global as a cursory Google search didn't show me a simple way to pass values defined from a <code>window.onload</code> function call to a function triggered from a button's <code>onclick</code> value.</li>
+<li>A big improvement is I now (finally) load all the dictionary words and add them to the trie data structure only <em>once</em> on pageload, and then reuse it every time the button is clicked.<ul>
+<li>I lazily just defined the trie data structure to be global as a cursory Google search didn't show me a simple way to pass values defined from a <code>window.onload</code> function call to a function triggered from a button's <code>onclick</code> value.</li>
 </ul>
 </li>
-<li>Pretty small, but I'm a bit of a keyboard warrior and don't love using my mouse, so as a small UX tweak I added a little <code>onkeydown</code> event to the row and column input elements to click the Generate Board button for you when you type Enter. 💁‍♀️</li>
+<li>Pretty small, but I'm a bit of a keyboard warrior and don't love using my mouse, so as a small UX tweak I added a little <code>onkeydown</code> event to the row and column input elements to click the Generate Board button for you when you type Enter. 💁‍♀️</li>
 </ol>
-<p>I still don't <em>really</em> know JavaScript and the goal has remained to just have something that works rather than follows all best practices, so I'm sure there are definitely more improvements to be made but I will probably leave at as this for the time-being.👨‍💻 </p>
+<p>I still don't <em>really</em> know JavaScript and the goal has remained to just have something that works rather than follows all best practices, so I'm sure there are definitely more improvements to be made but I will probably leave as is for the time-being.👨‍💻</p>
 
         <!-- End of Jinja filled in body -->
 
@@ -381,7 +374,7 @@ function solveRec(dict, board, rows, cols, i, j, traversed, answers, word) {
 
     </div>
 
-    <!-- Javascript libraries for Bootstrap -->
+    <!-- JavaScript libraries for Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
