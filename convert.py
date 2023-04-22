@@ -13,14 +13,15 @@ testing = False
 md_files_to_convert = []
 
 # All markdown files in local repo
-md_files_to_convert.extend(list(Path.cwd().joinpath('markdown_files').iterdir()))
+# md_files_to_convert.extend(list(Path.cwd().joinpath('markdown_files').iterdir()))
 
 # Individual files instead:
 # md_files_to_convert = [Path(r'markdown_files/boggle_raw.md')]
 
 # All Obsidian files
-obsidian_md_files_dir = r'C:\Users\lukef\Documents\general\website\website-markdown-files'
-md_files_to_convert.extend(list(Path(obsidian_md_files_dir).iterdir()))
+# obsidian_md_files_dir = r'C:\Users\lukef\Documents\general\website\website-markdown-files'
+# md_files_to_convert.extend(list(Path(obsidian_md_files_dir).iterdir()))
+md_files_to_convert = [Path(r'C:\Users\lukef\Documents\general\website\website-markdown-files\blog.md')]
 
 def process_markdown_file(md_text):
     """Takes raw markdown text and fixes a few problems I've had.
@@ -31,7 +32,7 @@ def process_markdown_file(md_text):
     2. When a DataFrame is displayed the row x col dimensions are as well and I 
        want to add a special div tag to stylize this output a bit differently.
     """
-
+    
     # 1. Removing 4 spaces of code output (that then get's interpretted as code)
     indented_code_output_matches = list(re.finditer(r'```\n\n    [\s\S]*?\n#', md_text))
 

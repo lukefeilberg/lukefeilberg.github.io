@@ -41,12 +41,13 @@ pre code {
 
 /* Centering images and making 80% width */
 .img-fluid {
-    max-width: 80%;
+    max-width: 88%;
     height: auto;
     display: block;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 1.85rem;
+    margin-bottom: 1.5em;
+    margin-top: 1.5rem;
 }
 .picture {
     margin-left: .75rem;
@@ -57,8 +58,13 @@ pre code {
     background: #f7f7f7; */
     /* border: 1px solid #cfcfcf;
     border-radius: 0.5em; */
-    border-radius: .65em; 
+    border-radius: 0.65em;
     line-height: 1.21429em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    max-width: 88%;
+    margin-right: auto;
+    margin-left: auto;
 } 
 
 /* This makes too big elements scrollable.
