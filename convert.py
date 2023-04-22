@@ -21,7 +21,7 @@ md_files_to_convert = []
 # All Obsidian files
 # obsidian_md_files_dir = r'C:\Users\lukef\Documents\general\website\website-markdown-files'
 # md_files_to_convert.extend(list(Path(obsidian_md_files_dir).iterdir()))
-md_files_to_convert = [Path(r'C:\Users\lukef\Documents\general\website\website-markdown-files\blog.md')]
+md_files_to_convert = [Path(r'C:\Users\lukef\Documents\general\website\website-markdown-files\contributing-to-plotly.md')]
 
 def process_markdown_file(md_text):
     """Takes raw markdown text and fixes a few problems I've had.
