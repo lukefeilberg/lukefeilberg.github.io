@@ -1,5 +1,5 @@
 <!-- Picture of me -->
-<img src="images/pic-of-me.jpg" alt="Corny picture of me" class="img-fluid rounded">
+<img src="images/pic-of-me.jpg" alt="Corny picture of me" class="img-fluid rounded" style="margin-top:3em;">
 <center><i>A slightly corny picture of me ;-)</i></center>
 
 # Hello World🌎
