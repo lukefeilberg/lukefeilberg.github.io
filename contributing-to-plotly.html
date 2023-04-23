@@ -183,7 +183,7 @@ ValueError: Value of <span class="s1">&#39;hover_data_0&#39;</span> is not the n
 <p><img src="images/plotly/interpreter.png" alt="Python Interpreter" class="img-fluid rounded"></p>
 <p>Now I added my breakpoint... </p>
 <p><img src="images/plotly/debugging.png" alt="Python Interpreter" class="img-fluid rounded"></p>
-<p>And we're ready to run with the debugger! Time to hit Ctrl+F5 🏁. </p>
+<p>And we're ready to run with the debugger! Time to hit that F5 key 🏁. </p>
 <p>When we first step into the <code>px.scatter</code> call, unsurprisingly we get to where <code>scatter</code> is defined in Plotly, which is shown (slightly truncated) below. All it is doing is immediately just calling <code>make_figure</code> and passing the current args as well as a constructor for <code>go.Scatter</code>. Let's take another step in!</p>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">scatter</span><span class="p">(</span>
     <span class="n">data_frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -328,7 +328,7 @@ ValueError: Value of <span class="s1">&#39;hover_data_0&#39;</span> is not the n
 <p>I then ran <code>pytest  packages/python/plotly/plotly/tests/</code> and all my tests passed🎉.</p>
 <p><em>Actually some random other tests failed because I apparently did not install all the external dependencies. After installing them I was able to get them all working.</em></p>
 <h2>The end 🏁</h2>
-<p>And with my added tests, I committed and pushed the changes to my PR which was merged in not long after. </p>
+<p>And with my added tests, I committed and pushed the changes to my PR which was merged in not long after. Now if you install or update Plotly to version 5.14.0+ you'll no longer be forced to pass lists🥂. You can also see the PR referenced in the Change Log <a href="https://github.com/plotly/plotly.py/blob/master/CHANGELOG.md">here</a>. </p>
 <p>Overall it was a cool experience. Maybe not too surprising but all the setup and little bells and whistles were the hardest part -- the actual problem was very easy to solve. Definitely next time I see a potential small improvement with a library I use I will be excited to contribute!</p>
 <hr>
 <h2>Bonus Plots 😎</h2>

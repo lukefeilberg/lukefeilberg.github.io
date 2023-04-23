@@ -48,6 +48,8 @@ pre code {
     margin-right: auto;
     margin-bottom: 1.5em;
     margin-top: 1.5rem;
+    /*important overrides some other "important"*/
+    border-radius: 0.65em!important; 
 }
 .picture {
     margin-left: .75rem;
