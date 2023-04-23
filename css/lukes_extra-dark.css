@@ -67,7 +67,12 @@ pre code {
     max-width: 88%;
     margin-right: auto;
     margin-left: auto;
-} 
+}
+
+/* Making plotly hover data background a bit transparent */
+g.hovertext > path {
+    opacity: .80;
+  }
 
 /* This makes too big elements scrollable.
    Wanted this for DataFrames but didn't work for .dataframe
