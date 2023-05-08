@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Webpage</title>
+</head>
+<body>
+    <input type="text" id="input" value="your funny Onion headline">
+    <button onclick="predict()">Predict</button>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
+    <script>
+        async function loadModel() {
+            console.log('Inside loadModel')
+            const model = await tf.loadLayersModel('my_tfjs_onion_model/model.json');
+            return model;
+        }
+
+        let model;
+        let vocab_dict;
+        window.onload = async function() {
+            console.log('Inside window.onLoad')
+            model = await loadModel();
+
+            console.log('Load dictionary')
+            fetch('my_tfjs_onion_model/vocab_dict.json')
+                .then(response => response.json())
+                .then(data => {
+                  vocab_dict = data;
+                  console.log(vocab_dict['the']);
+                })
+                .catch(error => console.error(error));
+        }
+
+        async function predict() {
+            const inputString = document.getElementById('input').value;
+            // ... preprocess inputString as needed
+            // Lower case string
+            let lowerString = inputString.toLowerCase();
+
+            // Split lowered string into list of words
+            let words = lowerString.match(/\w+/g);
+            console.log(words)
+
+            // Filter to at most 64
+            words = words.slice(0, 64);
+            console.log(words)
+
+            // Converting to numbers with vocab_dict
+            let nums = words.map(word => vocab_dict[word]);
+            console.log(nums)
+
+            // // Convert to array (was numpy idk now)
+            let inputPadded = nums.concat(Array(64 - nums.length).fill(0));
+            console.log(inputPadded)
+
+            // // Fix shape to be (1, 64)
+            // let inputFixed = [inputPadded]; // shape is now (1, 64) // This didn't work, trying again
+            const inputTensor = tf.tensor2d(inputPadded, [1, 64]);
+            console.log(inputTensor)
+
+            // // Make the prediction
+            let predictionRaw = await model.predict(inputTensor);
+            let prediction = predictionRaw.dataSync()[0]
+            console.log(prediction)
+        }
+    </script>
+</body>
+</html>

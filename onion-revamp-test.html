@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Luke</title>
+    <link rel="icon" type="image/png" href="images/favicon-mirrored.png">
+
+    <!-- Required meta tags for Bootstrap -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link 
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous"
+    >
+
+    <!-- Pygment's code highlight -->
+    <link rel="stylesheet" type="text/css" href="css/monokai.css">
+
+    <!-- Luke's extra highlights -->
+    <link rel="stylesheet" type="text/css" href="css/lukes_extra-dark.css">
+
+    <!-- MathJax boilerplate -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+
+    <!-- Counter.dev -->
+    <script src="https://cdn.counter.dev/script.js" data-id="0aeed35e-dde5-4063-8903-dbb24d498964" data-utcoffset="-7"></script>
+
+</head>
+
+<body>
+
+    <!-- Bootstrap needs to be in container to work properly -->
+    <div class="container">
+
+        <!-- Top Navigation Bar -->
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+            <!-- Brand -->
+            <a class="navbar-brand" href="https://lukefeilberg.github.io">Luke Feilberg 🤠</a>
+            <!-- Toggler/collapsibe Button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="https://lukefeilberg.github.io">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="https://lukefeilberg.github.io/projects.html">Projects</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="https://lukefeilberg.github.io/blog.html">Blog</a>
+                </li> 
+              </ul>
+            </div> 
+          </nav>
+          
+        <!-- Jinja fills in the body below -->
+
+<h1>Onion 🧅</h1>
+
+
+<p>Enter headline:</p>
+<div>  <!-- <div>  class="boggle-input-row-col"> -->
+  <input type="text" id="input_string" value="your funny Onion headline" style="width:88%;" onkeyup="handleKeyUp(event)" >
+</div>
+
+<div class="boggle-generate-button" style="margin-top: .5rem;">
+  <button id="get-onion-score-button" onclick="getOnionScore()">Get Onion Score!</button>
+</div>
+
+<div class="results-area" style="height:20rem;background-color: #272822; border-radius: 0.65em;">
+
+  <div class="results-header" style="opacity: 0.8; text-align: center;">
+    <h5><i>The almighty AI believes your headline to be...</i></h5>
+  </div>
+
+  <div class="results-line" id="results-line" style="text-align: center;">
+    <div style="opacity: 0.20;"><h2><i>(Waiting for your headline)</i></h2></div>
+  </div>
+
+  <div class="results-emoji" id="results-emoji" style="    
+    font-size: 3rem;
+    width: 6rem;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;">
+    <div style="opacity: 0.25;">
+      ⌛
+    </div>
+  </div>
+
+  <div class="results-confidence" id="results-confidence" style="opacity: 0.8; text-align: center;">
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
+<script>
+window.addEventListener('load', function() {
+  // Set focus to input on page load
+  document.getElementById('input_string').focus();
+});
+
+// Allow enter from headline input
+function handleKeyUp(event) {
+  if (event.key === "Enter") {
+    console.log("Inside handleKeyUp")
+    event.preventDefault();
+    console.log("After preventDefault")
+    document.getElementById("get-onion-score-button").click();
+  }
+}
+
+// Define some globals
+let model;
+let vocab_dict;
+
+async function loadModel() {
+    const model = await tf.loadLayersModel('my_tfjs_onion_model/model.json');
+    return model;
+}
+window.onload = async function() {
+    model = await loadModel();
+
+    fetch('my_tfjs_onion_model/vocab_dict.json')
+        .then(response => response.json())
+        .then(data => {
+          vocab_dict = data;
+        })
+        .catch(error => console.error(error));
+}
+
+async function getOnionScore() {
+    const inputString = document.getElementById('input_string').value;
+    // ... preprocess inputString as needed
+    // Lower case string
+    let lowerString = inputString.toLowerCase();
+
+    // Split lowered string into list of words
+    let words = lowerString.match(/\w+/g);
+
+    // Filter to at most 64
+    words = words.slice(0, 64);
+
+    // Converting to numbers with vocab_dict
+    let nums = words.map(word => vocab_dict[word]);
+
+    // // Convert to array (was numpy idk now)
+    let inputPadded = nums.concat(Array(64 - nums.length).fill(0));
+
+    // // Fix shape to be (1, 64)
+    // let inputFixed = [inputPadded]; // shape is now (1, 64) // This didn't work, trying again
+    const inputTensor = tf.tensor2d(inputPadded, [1, 64]);
+
+    // // Make the prediction
+    let predictionRaw = await model.predict(inputTensor);
+    let prediction = predictionRaw.dataSync()[0]
+
+    updateResults(prediction)
+}
+
+function updateResults(prediction) {
+  if (prediction >= 0.50) {
+    document.getElementById("results-line").innerHTML = '<h2><div style="color: green; overflow: hidden; font-family: Georgia, serif; font-weight: bolder;">The Onion!</div></h2>';
+    document.getElementById("results-emoji").innerHTML = '<div style="opacity: 0.90;">🧅</div>';
+    document.getElementById("results-confidence").innerHTML = `<h5><i>and the model claims to be <b>${(100 * prediction).toFixed(1)}%</b> sure.</i></h5>`
+  }
+  else {
+    document.getElementById("results-line").innerHTML = '<h2><div style="color: red; overflow: hidden;">Not the Onion!</div></h2>';
+    document.getElementById("results-emoji").innerHTML = '<div style="opacity: 0.90;">📰</div>';
+    document.getElementById("results-confidence").innerHTML = `<h5><i>and the model claims to be <b>${(100 * (1 - prediction)).toFixed(1)}%</b> sure.</i></h5>`
+  }
+}
+
+</script>
+
+<h2></h2>
+
+
+
+        <!-- End of Jinja filled in body -->
+
+
+        <!-- Footer -->
+        <footer class="footer">
+
+            <p>📫: lukefeilberg@gmail.com</p>
+        
+        </footer>
+        <!-- Footer -->
+
+    </div>
+
+    <!-- JavaScript libraries for Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
